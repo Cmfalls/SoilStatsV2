@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCU Stats Companion Guide</title>
+<style>
+  @page { size: letter portrait; margin: 0; }
+
+  :root {
+    --green-dark: #2f5202;
+    --green: #446f12;
+    --green-soft: #eef5e2;
+    --green-pale: #f7faf2;
+    --line: #c9d9af;
+    --line-soft: #dde8cd;
+    --text: #1d2119;
+    --muted: #5f6659;
+    --muted-soft: #7a8174;
+    --blue-muted: #57728e;
+    --gold: #b68a36;
+    --earth-soft: #f5efe8;
+    --blue-soft: #eef4fb;
+    --shadow: 0 14px 38px rgba(0, 0, 0, 0.2);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Aptos", "Segoe UI", system-ui, sans-serif;
+    color: var(--text);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #cfcfcf;
+  }
+
+  @media screen {
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 26px;
+      padding: 28px;
+    }
+  }
+
+  @media print {
+    body { background: #fff; gap: 0; padding: 0; }
+    .page {
+      width: 8.5in !important;
+      height: 11in !important;
+      box-shadow: none !important;
+      break-after: page;
+      page-break-after: always;
+      margin: 0 !important;
+    }
+    .page:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+  }
+
+  .page {
+    width: 816px;
+    height: 1056px;
+    background: #fff;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .page-inner {
+    flex: 1;
+    padding: 18px 30px 16px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    display: grid;
+    grid-template-columns: 122px 1fr 122px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-wrap.right {
+    justify-content: flex-end;
+  }
+
+  .logo {
+    max-width: 108px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .doc-head {
+    text-align: center;
+  }
+
+  .eyebrow {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+  }
+
+  .title {
+    font-family: "Aptos Display", "Aptos", sans-serif;
+    font-size: 28px;
+    line-height: 0.98;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .subtitle {
+    margin-top: 8px;
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 470px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .subtitle-line {
+    display: block;
+  }
+
+  .title-rule {
+    width: 96px;
+    height: 2px;
+    margin: 11px auto 0;
+    background: var(--gold);
+  }
+
+  .section {
+    margin-top: 22px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 9.4px;
+    font-weight: 800;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    white-space: nowrap;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .micro {
+    font-size: 8.6px;
+    font-weight: 800;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1.62fr 0.92fr;
+    gap: 22px;
+    padding: 16px 0 18px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-left {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    padding-right: 8px;
+  }
+
+  .hero-title {
+    font-family: "Aptos Display", "Aptos", sans-serif;
+    font-size: 29px;
+    line-height: 0.9;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-title .line-primary {
+    display: block;
+    color: var(--text);
+  }
+
+  .hero-title .line-secondary {
+    display: block;
+    color: var(--green);
+  }
+
+  .hero-rule {
+    width: 62px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--green-dark), var(--gold));
+    border-radius: 999px;
+  }
+
+  .hero-lead {
+    color: var(--green-dark);
+  }
+
+  .idea-list {
+    display: grid;
+    gap: 7px;
+  }
+
+  .idea-list div {
+    font-size: 14px;
+    line-height: 1.36;
+  }
+
+  .idea-list strong {
+    color: var(--green-dark);
+    font-weight: 800;
+  }
+
+  .idea-close {
+    font-size: 13.2px;
+    line-height: 1.35;
+    color: var(--green-dark);
+    font-weight: 800;
+    margin-top: 2px;
+  }
+
+  .hero-right {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+    padding-top: 17px;
+  }
+
+  .focus-box {
+    border: 1px solid #a9c07a;
+    border-radius: 10px;
+    padding: 20px 18px 18px;
+    background: #fff;
+  }
+
+  .focus-box .box-title {
+    font-size: 8.8px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+  }
+
+  .focus-box .box-value {
+    font-family: "Aptos Display", "Aptos", sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+    line-height: 1.05;
+  }
+
+  .focus-box .box-copy {
+    font-size: 10.2px;
+    line-height: 1.48;
+    color: var(--muted);
+  }
+
+  .inline-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 18px;
+  }
+
+  .metric {
+    padding: 0 14px;
+    min-height: 76px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .metric + .metric {
+    border-left: 1px solid var(--line-soft);
+  }
+
+  .metric:first-child {
+    padding-left: 0;
+  }
+
+  .metric:last-child {
+    padding-right: 0;
+  }
+
+  .metric-label {
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+  }
+
+  .metric-value {
+    font-size: 12.5px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .metric-copy {
+    font-size: 9.1px;
+    line-height: 1.38;
+    color: var(--muted);
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+
+  .open-block h3,
+  .review-step h3,
+  .criteria h3,
+  .prompt h3 {
+    font-size: 10.4px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 8px;
+  }
+
+  .open-block p,
+  .criteria p,
+  .prompt p,
+  .roadmap-card p {
+    font-size: 10.4px;
+    line-height: 1.58;
+    color: #2b3025;
+  }
+
+  .project-framing .three-col {
+    align-items: start;
+  }
+
+  .project-framing .open-block p {
+    max-width: 220px;
+  }
+
+  .review-band {
+    padding: 14px 16px 16px;
+    background: var(--green-pale);
+    border-top: 1px solid var(--line);
+  }
+
+  .review-flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .review-step {
+    min-height: 144px;
+    padding: 12px 14px 14px;
+    background: #fff;
+    border-top: 2px solid var(--line);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .step-tag {
+    display: inline-block;
+    font-size: 7.4px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 7px;
+  }
+
+  .review-step .step-name {
+    font-family: "Aptos Display", "Aptos", sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--green-dark);
+    margin-bottom: 7px;
+    line-height: 1;
+  }
+
+  .review-step .step-accent {
+    width: 30px;
+    height: 3px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+    background: var(--line);
+  }
+
+  .review-step.carbon .step-accent { background: var(--gold); }
+  .review-step.economics .step-accent { background: var(--green-dark); }
+  .review-step.water .step-accent { background: var(--blue-muted); }
+
+  .review-step p {
+    font-size: 9.9px;
+    line-height: 1.52;
+    color: #2f3528;
+  }
+
+  .check-grid {
+    display: grid;
+    grid-template-columns: 1.28fr 0.88fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .checklist ul,
+  .next-steps ol {
+    margin-left: 18px;
+    display: grid;
+    gap: 14px;
+  }
+
+  .checklist li,
+  .next-steps li {
+    font-size: 10.8px;
+    line-height: 1.58;
+    color: #2f3528;
+  }
+
+  .checklist strong {
+    color: var(--green-dark);
+  }
+
+  .helper-stack {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+
+  .helper-row {
+    padding-left: 12px;
+    border-left: 2px solid var(--line);
+  }
+
+  .helper-row h4 {
+    font-size: 8.8px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 5px;
+  }
+
+  .helper-row p {
+    font-size: 9.9px;
+    line-height: 1.48;
+    color: var(--muted);
+  }
+
+  .page-two-intro {
+    display: grid;
+    grid-template-columns: 1.55fr 0.95fr;
+    gap: 26px;
+    align-items: start;
+    margin-top: 10px;
+  }
+
+  .why-block {
+    padding-left: 12px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .why-block p {
+    font-size: 11.8px;
+    line-height: 1.62;
+    color: #2a3024;
+    max-width: 420px;
+  }
+
+  .approval-box {
+    background: var(--green-soft);
+    border-radius: 12px;
+    padding: 18px 18px 16px;
+  }
+
+  .approval-box h3 {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    margin-bottom: 10px;
+  }
+
+  .approval-box ul {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+
+  .approval-box li {
+    font-size: 10.5px;
+    line-height: 1.52;
+    color: #2f3528;
+  }
+
+  .roadmap {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 2px;
+  }
+
+  .roadmap::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    top: 20px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--line), #d6c391, var(--line));
+  }
+
+  .roadmap-node {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-content: start;
+  }
+
+  .roadmap-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e6efd7;
+    border: 2px solid #90aa5e;
+    color: var(--green-dark);
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    box-shadow: 0 0 0 5px #fff;
+  }
+
+  .roadmap-card {
+    padding-top: 4px;
+  }
+
+  .roadmap-card .node-title {
+    font-family: "Aptos Display", "Aptos", sans-serif;
+    font-size: 13.7px;
+    font-weight: 800;
+    color: var(--green);
+    line-height: 1.06;
+    margin-bottom: 8px;
+    min-height: 46px;
+  }
+
+  .roadmap-card p {
+    min-height: 64px;
+  }
+
+  .roadmap-output {
+    margin-top: 9px;
+    font-size: 8.5px;
+    line-height: 1.42;
+    color: var(--muted);
+  }
+
+  .bottom-grid {
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1.06fr 0.94fr;
+    gap: 24px;
+    margin-top: 18px;
+  }
+
+  .criteria-list {
+    display: grid;
+    gap: 16px;
+  }
+
+  .criteria {
+    padding-left: 14px;
+    border-left: 2px solid var(--line);
+  }
+
+  .criteria h3 {
+    margin-bottom: 5px;
+  }
+
+  .next-steps {
+    display: grid;
+    align-content: start;
+  }
+
+  .next-steps ol {
+    gap: 16px;
+  }
+
+  .prompts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 4px;
+  }
+
+  .prompt {
+    background: var(--green-pale);
+    padding: 16px 15px 15px;
+    min-height: 128px;
+  }
+
+  .prompt:nth-child(2) {
+    background: #f7f8f2;
+  }
+
+  .prompt:nth-child(3) {
+    background: #f9f5ef;
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    font-size: 8.6px;
+    color: #475040;
+  }
+
+  .footer strong {
+    color: var(--green-dark);
+  }
+
+  .footer-rule {
+    height: 4px;
+    background: var(--green-dark);
+    flex: 0 0 4px;
+  }
+
+  .page-one .page-inner {
+    padding-top: 16px;
+  }
+
+  .page-one .section {
+    margin-top: 20px;
+  }
+
+  .page-two .page-inner {
+    padding-top: 14px;
+  }
+
+  .page-two .title {
+    font-size: 26px;
+  }
+
+  .page-two .subtitle {
+    max-width: 520px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page page-one">
+  <div class="page-inner">
+    <div class="topbar">
+      <div class="logo-wrap">
+        <img src="../images/TEILogo.webp" alt="The Edison Institute" class="logo">
+      </div>
+      <div class="doc-head">
+        <div class="eyebrow">TCU Stats companion guide</div>
+        <div class="title">A short guide to this draft</div>
+        <div class="subtitle"><span class="subtitle-line">Built to help cold reviewers see what TCU Stats is,</span><span class="subtitle-line">why climate leads, and how to review it fast.</span></div>
+        <div class="title-rule"></div>
+      </div>
+      <div class="logo-wrap right">
+        <img src="../images/tcu-logo-black.png" alt="The Carbon Underground" class="logo">
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-left">
+        <div class="micro">What you are about to see</div>
+        <div class="hero-title">
+          <span class="line-primary">One climate story.</span>
+          <span class="line-secondary">Three linked systems.</span>
+        </div>
+        <div class="hero-rule"></div>
+        <div class="micro hero-lead">Core idea</div>
+        <div class="idea-list">
+          <div><strong>Soil carbon loss</strong> drives warming</div>
+          <div><strong>Warming</strong> raises financial stress</div>
+          <div><strong>Warming</strong> destabilizes water</div>
+        </div>
+        <div class="idea-close">Soil health is the leverage point that changes all three.</div>
+      </div>
+      <div class="hero-right">
+        <div class="focus-box">
+          <div class="box-title">Primary goal</div>
+          <div class="box-value">Clarify the thesis</div>
+          <div class="box-copy">Position TEI as a scientific authority on soil, climate, resilience, and food-system stability.</div>
+        </div>
+        <div class="focus-box">
+          <div class="box-title">Review mode</div>
+          <div class="box-value">Near-final draft</div>
+          <div class="box-copy">Strong enough for review, with room to tighten messaging and evidence where needed.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="inline-metrics">
+      <div class="metric">
+        <div class="metric-label">Best use</div>
+        <div class="metric-value">Start here first</div>
+        <div class="metric-copy">Use this guide to frame the site before reviewing the details.</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Review time</div>
+        <div class="metric-value">10 to 30 minutes</div>
+        <div class="metric-copy">A fast scan takes about 10; a fuller pass takes 20 to 30.</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Review path</div>
+        <div class="metric-value">Overview to Water</div>
+        <div class="metric-copy">Overview, Carbon, Economics, then Water.</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Support layer</div>
+        <div class="metric-value">Fact-check synced</div>
+        <div class="metric-copy">Use the fact-check register when any number needs sourcing.</div>
+      </div>
+    </section>
+
+    <section class="section project-framing">
+      <div class="section-head">
+        <div class="section-title">Project framing</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="three-col">
+        <div class="open-block">
+          <h3>What this is</h3>
+          <p>A climate-led review asset for testing the strongest science and messaging behind a food-system resilience story before this becomes a public site, pitch, or media tool.</p>
+        </div>
+        <div class="open-block">
+          <h3>Who built this</h3>
+          <p>The Edison Institute joins <strong>The Carbon Underground</strong> with <strong>CSU Chico's Center for Regenerative Agriculture and Resilient Systems</strong>.</p>
+        </div>
+        <div class="open-block">
+          <h3>What this is not</h3>
+          <p>Not the final public launch, investor deck, or white paper. It is the shared base those downstream assets will build from.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-title">How to review the site</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="review-band">
+        <div class="review-flow">
+          <div class="review-step overview">
+            <div class="step-tag">Start here</div>
+            <div class="step-name">Overview</div>
+            <div class="step-accent"></div>
+            <p>Start with the climate throughline, core metrics, and the SOM slider. This sets the logic for everything else, including the food-system stakes.</p>
+          </div>
+          <div class="review-step carbon">
+            <div class="step-tag">Pillar 1</div>
+            <div class="step-name">Carbon</div>
+            <div class="step-accent"></div>
+            <p>See how soil carbon loss became an atmospheric problem and why rebuilding soil carbon matters as drawdown.</p>
+          </div>
+          <div class="review-step economics">
+            <div class="step-tag">Pillar 2</div>
+            <div class="step-name">Economics</div>
+            <div class="step-accent"></div>
+            <p>See how climate risk is already showing up in the farm ledger through inputs, margins, and debt stress.</p>
+          </div>
+          <div class="review-step water">
+            <div class="step-tag">Pillar 3</div>
+            <div class="step-name">Water</div>
+            <div class="step-accent"></div>
+            <p>See how warming appears through water systems: infiltration, aquifer drawdown, and SGMA pressure.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-title">What reviewers should focus on</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="check-grid">
+        <div class="checklist">
+          <ul>
+            <li>Is the <strong>purpose clear</strong> right away?</li>
+            <li>Does <strong>climate connect</strong> carbon, economics, and water clearly enough to support the food-system stakes?</li>
+            <li>Which <strong>proof points</strong> feel strongest?</li>
+            <li>Which claims still feel <strong>weak, unclear, or overstated</strong>?</li>
+          </ul>
+        </div>
+        <div class="helper-stack">
+          <div class="helper-row">
+            <h4>Time</h4>
+            <p>Plan on 20 to 30 minutes for a full read. A fast scan should take about 10 minutes.</p>
+          </div>
+          <div class="helper-row">
+            <h4>Best companion</h4>
+            <p>If a number feels uncertain, cross-check it against the fact-check register.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div><strong>The Edison Institute</strong> | <strong>The Carbon Underground</strong> | Companion guide</div>
+      <div>Updated April 1, 2026</div>
+    </div>
+  </div>
+  <div class="footer-rule"></div>
+</div>
+
+<div class="page page-two">
+  <div class="page-inner">
+    <div class="topbar">
+      <div class="logo-wrap">
+        <img src="../images/TEILogo.webp" alt="The Edison Institute" class="logo">
+      </div>
+      <div class="doc-head">
+        <div class="eyebrow">Strategic applications</div>
+        <div class="title">Where this work goes next</div>
+        <div class="subtitle">The same evidence base can be adapted into downstream assets once the climate framing and strongest proof points are approved.</div>
+        <div class="title-rule"></div>
+      </div>
+      <div class="logo-wrap right">
+        <img src="../images/tcu-logo-black.png" alt="The Carbon Underground" class="logo">
+      </div>
+    </div>
+
+    <section class="page-two-intro">
+      <div class="why-block">
+        <div class="micro">Why this exists</div>
+        <p>This is not just a website draft. It is a <strong>shared evidence and messaging foundation</strong>. The goal is to pressure-test the climate story, align on the strongest numbers, and adapt the material into donor tools, public science assets, site architecture, and food-system resilience storytelling.</p>
+      </div>
+      <div class="approval-box">
+        <h3>What approval should answer</h3>
+        <ul>
+          <li>Is the climate throughline strong enough to lead each section?</li>
+          <li>Do the headline claims feel persuasive and supportable?</li>
+          <li>Is the purpose obvious within the first screen?</li>
+          <li>Does TEI feel positioned as a scientific authority?</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-title">Roadmap</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="roadmap">
+        <div class="roadmap-node">
+          <div class="roadmap-number">1</div>
+          <div class="roadmap-card">
+            <div class="node-title">Investor and donor tool</div>
+            <p>A concise climate-led briefing for conversations about soil, drawdown, and resilience.</p>
+            <div class="roadmap-output">Output: faster prep, stronger leave-behinds, clearer funding narrative.</div>
+          </div>
+        </div>
+        <div class="roadmap-node">
+          <div class="roadmap-number">2</div>
+          <div class="roadmap-card">
+            <div class="node-title">Edison Institute evidence base</div>
+            <p>A research-backed public science position that clarifies the soil-climate relationship with rigor.</p>
+            <div class="roadmap-output">Output: stronger science pages, public authority, clearer role for TEI.</div>
+          </div>
+        </div>
+        <div class="roadmap-node">
+          <div class="roadmap-number">3</div>
+          <div class="roadmap-card">
+            <div class="node-title">TCU 2.0 website foundation</div>
+            <p>A structural base for the message that net zero is not enough and legacy carbon must be drawn down.</p>
+            <div class="roadmap-output">Output: clearer architecture, stronger mission framing, more differentiated position.</div>
+          </div>
+        </div>
+        <div class="roadmap-node">
+          <div class="roadmap-number">4</div>
+          <div class="roadmap-card">
+            <div class="node-title">Media and content library</div>
+            <p>A source bank of charts, proof points, and short narrative frames for explainers and press.</p>
+            <div class="roadmap-output">Output: reusable assets, stronger consistency, faster content production.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="bottom-grid">
+      <div>
+        <div class="section-head">
+          <div class="section-title">What good looks like</div>
+          <div class="section-line"></div>
+        </div>
+        <div class="criteria-list">
+          <div class="criteria">
+            <h3>Message clarity</h3>
+            <p>A cold reader should understand what TCU Stats is, why it matters, and how climate pressure becomes carbon, economic, water, and food-system risk.</p>
+          </div>
+          <div class="criteria">
+            <h3>Evidence confidence</h3>
+            <p>The strongest public-facing numbers should feel credible, easy to trace, and consistent with the fact-check register.</p>
+          </div>
+          <div class="criteria">
+            <h3>Strategic reuse</h3>
+            <p>The material should feel ready to become a meeting tool, public science asset, website structure, and media library.</p>
+          </div>
+        </div>
+      </div>
+      <div class="next-steps">
+        <div class="section-head">
+          <div class="section-title">Next move</div>
+          <div class="section-line"></div>
+        </div>
+        <ol>
+          <li>Review the live site.</li>
+          <li>Flag any weak claim or section.</li>
+          <li>Resolve those items in the fact-check register.</li>
+          <li>Reuse the approved material downstream.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-title">Suggested prompts</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="prompts">
+        <div class="prompt">
+          <h3>Purpose</h3>
+          <p>If this landed cold in an inbox, would the recipient understand what they are being asked to review, why it matters, and why the food-system stakes are real?</p>
+        </div>
+        <div class="prompt">
+          <h3>Climate framing</h3>
+          <p>Does each major section reinforce that carbon, economics, and water are connected expressions of the same climate problem, with food security as the consequence?</p>
+        </div>
+        <div class="prompt">
+          <h3>Weak points</h3>
+          <p>Which claims, transitions, or sections still feel overstated, under-supported, or too subtle?</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div><strong>The Edison Institute</strong> | <strong>The Carbon Underground</strong> | Companion guide</div>
+      <div>Updated April 1, 2026</div>
+    </div>
+  </div>
+  <div class="footer-rule"></div>
+</div>
+
+</body>
+</html>

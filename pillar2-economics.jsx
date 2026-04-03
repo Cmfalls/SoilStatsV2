@@ -187,23 +187,43 @@ function TabIntro({ icon, headline, sub, color = "#6a9d2a" }) {
   return (
     <FadeIn>
       <div style={{
-        padding: "20px 24px",
-        background: `linear-gradient(135deg, ${color}0d 0%, rgba(240,238,232,0.85) 100%)`,
-        borderRadius: 12,
-        border: `1px solid ${color}22`,
-        marginBottom: 4,
-        display: "flex", alignItems: "center", gap: 18,
+        padding: "18px 22px 18px",
+        background: `linear-gradient(135deg, ${color}08 0%, rgba(245,244,238,0.96) 48%, rgba(240,238,232,0.9) 100%)`,
+        borderRadius: 16,
+        border: `1px solid ${color}20`,
+        borderTop: `3px solid ${color}35`,
+        marginBottom: 10,
+        display: "grid",
+        gridTemplateColumns: "auto 1fr",
+        alignItems: "start",
+        gap: 16,
+        boxShadow: "0 1px 6px rgba(0,0,0,0.03)",
       }}>
         <IconBadge
           icon={icon}
-          size={22}
-          padding={10}
-          bg={`${color}12`}
-          border={`1px solid ${color}25`}
+          size={18}
+          padding={9}
+          bg={`${color}10`}
+          border={`1px solid ${color}20`}
         />
-        <div>
-          <div style={{ fontSize: 15, fontWeight: 700, color: "#1a1a12", marginBottom: 5 }}>{headline}</div>
-          <div style={{ fontSize: 13, color: "#6a6a5a", lineHeight: 1.65 }}>{sub}</div>
+        <div style={{ minWidth: 0 }}>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            color,
+            fontSize: 9,
+            letterSpacing: 2.1,
+            textTransform: "uppercase",
+            fontWeight: 700,
+            marginBottom: 10,
+          }}>
+            <span style={{ width: 5, height: 5, borderRadius: "50%", background: color, flexShrink: 0 }} />
+            Climate Connection
+            <span style={{ height: 1, flex: 1, background: `${color}25` }} />
+          </div>
+          <div style={{ fontSize: 14.5, fontWeight: 700, color: "#1a1a12", marginBottom: 6, lineHeight: 1.35 }}>{headline}</div>
+          <div style={{ fontSize: 13, color: "#5f6257", lineHeight: 1.68, maxWidth: 780 }}>{sub}</div>
         </div>
       </div>
     </FadeIn>
@@ -251,9 +271,14 @@ function ROITimeline() {
               <div style={{ fontSize: 11, color: "#6a6a5a", lineHeight: 1.4 }}>{y.desc}</div>
             </div>
             <div style={{
-              fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 20,
-              color: y.color, textAlign: "right", flexShrink: 0,
-            }}>{y.pct}%</div>
+              fontSize: 10,
+              color: "#6a6a5a",
+              textAlign: "right",
+              flexShrink: 0,
+              letterSpacing: 1.1,
+              textTransform: "uppercase",
+              fontWeight: 700,
+            }}>stage</div>
           </div>
         ))}
       </div>
@@ -600,17 +625,15 @@ function FundingGapMeter() {
   return (
     <div ref={ref} style={{ padding: "26px 24px", background: "#eeece8", borderRadius: 14, border: "1px solid rgba(106,157,42,0.18)" }}>
       <div style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "#7a7a6a", marginBottom: 16 }}>
-        The Funding Gap — Investment Needed vs. Deployed
+        The Funding Gap - Investment Needed vs. Deployed
       </div>
 
-      {/* Track */}
       <div style={{ marginBottom: 10 }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, alignItems: "baseline" }}>
           <div style={{ fontSize: 11, color: "#6a6a5a" }}>Capital deployed</div>
-          <div style={{ fontSize: 11, color: "#6a6a5a" }}>Annual need: $200–450B</div>
+          <div style={{ fontSize: 11, color: "#6a6a5a" }}>Annual need: $200-450B</div>
         </div>
         <div style={{ position: "relative", background: "#f5f4ee", borderRadius: 8, height: 40, overflow: "hidden", border: "1px solid rgba(0,0,0,0.07)" }}>
-          {/* Unfunded zone label */}
           <div style={{
             position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
             fontSize: 11, color: "rgba(192,57,43,0.6)", fontWeight: 600, letterSpacing: 0.5,
@@ -629,17 +652,15 @@ function FundingGapMeter() {
             {vis && <span style={{ fontSize: 11, fontWeight: 700, color: "#fff", whiteSpace: "nowrap" }}>~$20B</span>}
           </div>
         </div>
-        {/* Scale labels */}
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
           <div style={{ fontSize: 9, color: "#7a7a6a" }}>$0</div>
-          <div style={{ fontSize: 9, color: "#7a7a6a" }}>$200–450B needed annually</div>
+          <div style={{ fontSize: 9, color: "#7a7a6a" }}>$200-450B needed annually</div>
         </div>
       </div>
 
-      {/* Three stats */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginTop: 16 }}>
         {[
-          { val: "$200–450B", label: "Annual global need", sub: "To achieve soil restoration at scale.", color: "#1a1a12" },
+          { val: "$200-450B", label: "Annual global need", sub: "To achieve soil restoration at scale.", color: "#1a1a12" },
           { val: "<10%", label: "Currently funded", sub: "Gap is structural, not informational.", color: "#c0392b" },
           { val: "$1B", label: "Bezos Earth Fund", sub: "Largest single commitment. Still <1% of the gap.", color: "#7a7a6a" },
         ].map((s, i) => (
@@ -656,8 +677,6 @@ function FundingGapMeter() {
     </div>
   );
 }
-
-// ─── Disaster Trend ───────────────────────────────────────────────────────────
 
 function DisasterTrend() {
   const [vis, setVis] = useState(false);
@@ -738,13 +757,13 @@ function DisasterTrend() {
 // ─── Main Export ──────────────────────────────────────────────────────────────
 
 export default function EconomicsViz() {
-  const [activeTab, setActiveTab] = useState("profit");
+  const [activeTab, setActiveTab] = useState("yields");
 
   const tabs = [
-    { id: "profit",    label: "Profitability",        desc: "The economic case for regenerative" },
-    { id: "casestudy", label: "Case Studies",         desc: "Real farms, real results" },
+    { id: "yields",    label: "Climate & Yields",      desc: "What warming costs farmers" },
+    { id: "profit",    label: "Profitability",         desc: "The economic case for regenerative" },
+    { id: "casestudy", label: "Case Studies",          desc: "Real farms, real results" },
     { id: "stress",    label: "Farm Financial Stress", desc: "The crisis in conventional ag" },
-    { id: "yields",    label: "Climate & Yields",     desc: "What warming costs farmers" },
   ];
 
   return (
@@ -766,32 +785,21 @@ export default function EconomicsViz() {
         }} />
         <div style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(135deg, rgba(240,238,232,0.85) 0%, rgba(14,15,10,0.25) 50%, rgba(255,255,255,0.82) 100%)",
+          background: "linear-gradient(90deg, rgba(14,15,10,0.78) 0%, rgba(14,15,10,0.58) 36%, rgba(14,15,10,0.26) 70%, rgba(14,15,10,0.16) 100%)",
         }} />
         <div style={{
           position: "absolute", inset: 0,
           background: "linear-gradient(to bottom, rgba(14,15,10,0) 0%, rgba(14,15,10,0.75) 60%, #f5f4ee 100%)",
         }} />
 
-        {/* Floating crisis badge */}
         <div style={{
-          position: "absolute", top: 20, right: 20,
-          background: "rgba(255,255,255,0.82)", backdropFilter: "blur(12px)",
-          border: "1px solid rgba(192,57,43,0.32)",
-          borderRadius: 10, padding: "10px 14px",
-          textAlign: "center",
-          boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
-        }}>
-          <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 34, color: "#e74c3c", lineHeight: 1 }}>$320B</div>
-          <div style={{ fontSize: 9, color: "#5a5a4a", letterSpacing: 1.2, marginTop: 2 }}>CLIMATE LOSSES 2024</div>
-          <div style={{ fontSize: 8, color: "#7a7a6a", marginTop: 2 }}>Munich Re record - total economic losses</div>
-          <div style={{
-            marginTop: 8, paddingTop: 4, borderTop: "1px solid rgba(192,57,43,0.2)",
-            fontSize: 8, color: "#e74c3c", letterSpacing: 0.5,
-          }}>growing every year</div>
-        </div>
+          position: "absolute",
+          inset: 0,
+          background: "radial-gradient(circle at 34% 38%, rgba(38,52,15,0.16) 0%, rgba(38,52,15,0.08) 24%, rgba(38,52,15,0) 52%)",
+        }} />
 
-        <header style={{ position: "relative", zIndex: 1, padding: "60px 32px 44px", maxWidth: 920, margin: "0 auto" }}>
+        <header style={{ position: "relative", zIndex: 1, padding: "64px 32px 44px", maxWidth: 920, margin: "0 auto" }}>
+          <div style={{ maxWidth: 660 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             fontSize: 10, letterSpacing: 3, textTransform: "uppercase",
@@ -809,30 +817,72 @@ export default function EconomicsViz() {
             color: "#ffffff",
             textShadow: "0 2px 40px rgba(0,0,0,0.9)",
           }}>
-            The Economics<br />
-            <span style={{ color: "#6a9d2a" }}>of Soil</span>
+            Climate Risk Hits<br />
+            <span style={{ color: "#6a9d2a" }}>the Farm Ledger</span>
           </h1>
           <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 15.5, lineHeight: 1.75, marginTop: 20, maxWidth: 560 }}>
-            Regenerative farms earn <strong style={{ color: "#dce7cb" }}>78% higher profits</strong> while cutting input costs by half. Conventional agriculture faces record bankruptcies, $500M+/yr in documented hidden fertilizer costs, and $320B in total economic climate disaster losses. The economic case has never been clearer.
+            Climate change is already breaking farm economics. Regenerative farms earn <strong style={{ color: "#dce7cb" }}>78% higher profits</strong> because they store more carbon, hold more water, and reduce dependence on the same synthetic inputs driving climate risk.
           </p>
-
-          {/* Key stat row */}
-          <div style={{ display: "flex", gap: 12, marginTop: 24, flexWrap: "wrap" }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: 8,
+            marginTop: 24,
+            maxWidth: 700,
+          }}>
             {[
-              { val: "+78%", label: "regen profits", color: "#6a9d2a" },
-              { val: "$500M+/yr", label: "extra fertilizer costs (US corn)", color: "#e74c3c" },
-              { val: "$250B", label: "McKinsey opportunity", color: "#6a9d2a" },
-            ].map((s, i) => (
-              <div key={i} style={{
-                display: "flex", alignItems: "center", gap: 10,
-                background: "rgba(255,255,255,0.84)", backdropFilter: "blur(8px)",
-                padding: "7px 12px", borderRadius: 8,
-                border: `1px solid ${s.color}30`,
-              }}>
-                <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 18, color: s.color }}>{s.val}</div>
-                <div style={{ fontSize: 11, color: "#6a6a5a" }}>{s.label}</div>
+              { title: "Profit edge", stat: "+78%", statLabel: "regen profits", accent: "#6a9d2a" },
+              { title: "Nitrogen risk", stat: "273x", statLabel: "N2O warming power", accent: "#e74c3c" },
+              { title: "Transition upside", stat: "$250B", statLabel: "McKinsey opportunity", accent: "#6a9d2a" },
+            ].map((item) => (
+              <div
+                key={item.title}
+                style={{
+                  padding: "11px 12px 10px",
+                  borderRadius: 12,
+                  background: "rgba(14,15,10,0.32)",
+                  backdropFilter: "blur(6px)",
+                  border: `1px solid ${item.accent}33`,
+                  display: "grid",
+                  gap: 6,
+                }}
+              >
+                <div style={{
+                  fontSize: 10,
+                  letterSpacing: 1.6,
+                  textTransform: "uppercase",
+                  color: item.accent,
+                  fontWeight: 700,
+                  marginBottom: 2,
+                  textShadow: "0 1px 10px rgba(0,0,0,0.22)",
+                }}>
+                  {item.title}
+                </div>
+                <div>
+                  <div style={{
+                    fontFamily: "'Bebas Neue', Arial, sans-serif",
+                    fontSize: item.stat.length > 5 ? 24 : 30,
+                    lineHeight: 0.92,
+                    color: "#ffffff",
+                    marginBottom: 1,
+                  }}>
+                    {item.stat}
+                  </div>
+                  <div style={{
+                    fontSize: 10.5,
+                    lineHeight: 1.35,
+                    color: item.accent,
+                    letterSpacing: 0.7,
+                    textTransform: "uppercase",
+                    fontWeight: 700,
+                    textShadow: "0 1px 10px rgba(0,0,0,0.22)",
+                  }}>
+                    {item.statLabel}
+                  </div>
+                </div>
               </div>
             ))}
+          </div>
           </div>
         </header>
       </div>
@@ -852,7 +902,7 @@ export default function EconomicsViz() {
             { label: "$250B", sub: "McKinsey projection" },
             { label: "$624.7B", sub: "US farm debt by 2026" },
             { label: "$320B losses", sub: "total economic, global climate 2024" },
-            { label: "$500M+/yr", sub: "hidden US corn fertilizer costs" },
+            { label: "273x", sub: "N2O vs. CO2 warming power" },
           ].map((item, i) => (
             <span key={i} style={{
               display: "inline-flex", alignItems: "center", gap: 5, whiteSpace: "nowrap",
@@ -919,8 +969,8 @@ export default function EconomicsViz() {
 
             <TabIntro
               icon="/icons/financial.webp"
-              headline="Regenerative farming is not just better for the planet — it's better economics"
-              sub="The data from 100-farm studies, McKinsey projections, and real-farm case studies converge on one conclusion: soil health and financial health are the same thing."
+              headline="Regenerative farming is climate adaptation that pays"
+              sub="The data from 100-farm studies, McKinsey projections, and real-farm case studies converge on one conclusion: soil health and financial health are the same system."
             />
 
             {/* Top 3 stats */}
@@ -969,17 +1019,16 @@ export default function EconomicsViz() {
                     The largest real-farm economic study of regenerative agriculture. $51.60/acre net return for corn, $44.89 for soy — after accounting for all transition costs, equipment changes, and learning curves. A separate 30-farm study found <strong style={{ color: "#1a1a12" }}>$65/acre average gains</strong>.
                   </div>
                 </div>
-              </div>
-            </FadeIn>
+                </div>
+              </FadeIn>
 
             {/* Side-by-side comparison */}
             <FadeIn delay={120}>
               <div>
-                <SectionHeader title="Side-by-Side Comparison" sub="Regenerative vs. conventional across four key metrics." />
+                <SectionHeader title="Side-by-Side Comparison" sub="Regenerative vs. conventional across three key climate-finance metrics." />
                 <CompareBar label="Net profit ($/acre)" regen={118} conv={66} maxVal={140} unit="$/ac" delay={0} />
                 <CompareBar label="Input costs index" regen={55} conv={100} maxVal={110} note="lower = better" delay={100} higherIsBetter={false} />
                 <CompareBar label="Drought year yield advantage (regen vs. conv)" regen={134} conv={100} maxVal={150} unit="%" delay={200} />
-                <CompareBar label="Soil organic matter (%)" regen={4.2} conv={2.1} maxVal={5} unit="%" delay={300} />
               </div>
             </FadeIn>
 
@@ -1000,12 +1049,11 @@ export default function EconomicsViz() {
                     color: "#1a1a12", lineHeight: 1, marginBottom: 10,
                   }}>$250B</div>
                   <div style={{ fontSize: 13.5, color: "#2a2a1e", lineHeight: 1.7, marginBottom: 14 }}>
-                    Incremental economic value over a decade at 80% US corn/soy adoption of regenerative practices.
+                    Incremental economic value over a decade at 80% US corn/soy adoption of regenerative practices - the economic value of a climate solution, not just a farming method.
                   </div>
                   <InsightBox color="#6a9d2a">
                     <div style={{ fontSize: 12, color: "#6a6a5a", lineHeight: 1.6 }}>
-                      Boston Consulting Group: up to <strong style={{ color: "#5a5a4a" }}>120% long-term ROI</strong> on regenerative transitions — exceeding conventional high-input systems by 3×.
-                    </div>
+                      Boston Consulting Group: up to <strong style={{ color: "#5a5a4a" }}>130% long-term ROI</strong> on regenerative transitions, reinforcing that resilience is now an investable climate outcome.</div>
                   </InsightBox>
                 </div>
               </FadeIn>
@@ -1018,7 +1066,7 @@ export default function EconomicsViz() {
                   height: "100%", boxSizing: "border-box",
                 }}>
                   <div style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "#e74c3c", marginBottom: 12 }}>
-                    Hidden Costs of Degraded Soil
+                    Climate Cost of Input Dependence
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
                     <div>
@@ -1027,10 +1075,13 @@ export default function EconomicsViz() {
                       <div style={{ fontSize: 10, color: "#7a7a6a", marginTop: 4 }}>Jang et al., 2020</div>
                     </div>
                     <div>
-                      <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 40, color: "#c0392b", lineHeight: 1 }}>$1T+/yr</div>
-                      <div style={{ fontSize: 12, color: "#6a6a5a", lineHeight: 1.5, marginTop: 6 }}>Broader externality estimate including Gulf Dead Zone, water pollution, and ecosystem losses — informal extrapolation.</div>
-                      <div style={{ fontSize: 10, color: "#7a7a6a", marginTop: 4 }}>Jason Neff, CU Boulder, 2021 (press release estimate)</div>
+                      <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 40, color: "#c0392b", lineHeight: 1 }}>273x</div>
+                      <div style={{ fontSize: 12, color: "#6a6a5a", lineHeight: 1.5, marginTop: 6 }}>Nitrous oxide warming power relative to CO2. Synthetic nitrogen is both an input-cost issue and a climate-risk issue.</div>
+                      <div style={{ fontSize: 10, color: "#7a7a6a", marginTop: 4 }}>IPCC AR6; UNEP Global Nitrous Oxide Assessment</div>
                     </div>
+                  </div>
+                  <div style={{ fontSize: 12.5, color: "#2a2a1e", lineHeight: 1.65 }}>
+                    Synthetic fertilizer is not just an expense line. It is a greenhouse gas line. Lower input dependence means lower exposure to N2O emissions, volatile fertilizer markets, and climate-driven margin compression.
                   </div>
                 </div>
               </FadeIn>
@@ -1048,10 +1099,10 @@ export default function EconomicsViz() {
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12 }}>
                   {[
-                    { val: "$4.50–$11.25", label: "Per acre/year", sub: "carbon credit revenue" },
-                    { val: "$36M→$648M", label: "Market size", sub: "voluntary carbon 2023→2034" },
-                    { val: "31.9%", label: "CAGR", sub: "carbon credit market growth" },
+                    { val: "$4.50-$11.25", label: "Per acre/year", sub: "carbon credit revenue" },
                     { val: "8M+ acres", label: "Enrolled", sub: "Indigo Ag platform globally" },
+                    { val: "2M+ tons", label: "CO2e credits verified", sub: "documented across Indigo Ag projects" },
+                    { val: "$2.8B", label: "Public transition support", sub: "USDA climate-smart commodity funding committed since 2022" },
                   ].map((s, i) => (
                     <div key={i} style={{
                       padding: "16px 14px", background: "#f5f4ee",
@@ -1109,12 +1160,12 @@ export default function EconomicsViz() {
             <TabIntro
               icon="/icons/checklist.webp"
               headline="These aren't pilot projects — they're scalable, documented business transformations"
-              sub="Every farm below followed the same playbook: stop destroying soil biology, start rebuilding it. The financial returns followed predictably."
+              sub="Every farm below followed the same playbook: stop destroying soil biology, start rebuilding it. The financial returns followed predictably because climate resilience, lower inputs, and carbon performance improved together."
             />
             <FadeIn>
               <SectionHeader
                 title="Real Farm Transformations"
-                sub="Documented outcomes from farms that made the transition to regenerative management."
+                sub="Documented outcomes from farms that turned soil restoration into both stronger business performance and stronger climate performance."
               />
             </FadeIn>
 
@@ -1208,7 +1259,7 @@ export default function EconomicsViz() {
 
                 <InsightBox color="#6a9d2a">
                   <div style={{ fontSize: 12, color: "#6a6a5a", lineHeight: 1.7 }}>
-                    Brown transformed 5,000 acres over 20+ years. Soil carbon rose from 1.9% to 6.1%, approaching virgin prairie levels. Water infiltration improved 16x, eliminating irrigation need. Source: Brown's Ranch case study, NRCS.
+                    Brown transformed 5,000 acres over 20+ years. Soil carbon rose from 1.9% to 6.1%, approaching virgin prairie levels. Water infiltration improved 16x, eliminating irrigation need, and the ranch became a working example of climate adaptation through soil recovery. Source: Brown's Ranch case study, NRCS.
                   </div>
                 </InsightBox>
               </div>
@@ -1304,7 +1355,7 @@ export default function EconomicsViz() {
 
                 <InsightBox color="#6a9d2a">
                   <div style={{ fontSize: 12, color: "#6a6a5a", lineHeight: 1.7 }}>
-                    Harris converted a 3rd-generation industrial cattle operation into a 12-species regenerative grazing system. An independent life cycle analysis found the farm now sequesters more carbon than its beef produces, making it net carbon-negative. Revenue grew 20x while input costs fell 80%+. Source: Quantis / White Oak Pastures LCA, 2019.
+                    Harris converted a 3rd-generation industrial cattle operation into a 12-species regenerative grazing system. An independent life cycle analysis found the farm now sequesters more carbon than its beef produces, making it net carbon-negative. Revenue grew 20x while input costs fell 80%+, turning climate drawdown into a measurable business advantage. Source: Quantis / White Oak Pastures LCA, 2019.
                   </div>
                 </InsightBox>
               </div>
@@ -1328,7 +1379,7 @@ export default function EconomicsViz() {
                   </div>
                   <InsightBox color="#6a9d2a">
                     <div style={{ fontSize: 11, color: "#6a6a5a", lineHeight: 1.5 }}>
-                      Enrollment growing 40%+ year-over-year as more farmers see income diversification benefits.
+                      Enrollment growth signals that climate-linked farm revenue is moving from niche experiment toward scalable transition finance.
                     </div>
                   </InsightBox>
                 </div>
@@ -1398,7 +1449,7 @@ export default function EconomicsViz() {
                     Chapter 12 farm bankruptcies surging — up 127% from 2023 low
                   </div>
                   <div style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.7 }}>
-                    Conventional agriculture is financially failing. High input costs, rising debt loads, weather shocks, and falling commodity margins are colliding at once.
+                    Conventional agriculture is financially failing. High input costs, rising debt loads, climate shocks, and falling commodity margins are colliding at once.
                   </div>
                 </div>
               </div>
@@ -1471,9 +1522,19 @@ export default function EconomicsViz() {
             <TabIntro
               icon="/icons/weather.webp"
               headline="Climate change is already costing farmers yields — and the losses are compounding"
-              sub="These are observed historical declines, not projections. Every degree of additional warming compounds each loss below."
+              sub="These are observed historical declines, not projections. Every degree of additional warming compounds each loss below - and the damage travels outward as tighter supply and higher food prices."
               color="#c0392b"
             />
+            <div style={{
+              marginTop: -2,
+              fontSize: 13,
+              color: "#6a6a5a",
+              lineHeight: 1.65,
+              maxWidth: 760,
+            }}>
+              When yields weaken and food inflation rises together, climate stress stops being just a farm problem and
+              starts showing up as pressure on household food access.
+            </div>
             <FadeIn>
               <SectionHeader
                 title="Observed Crop Yield Losses"
@@ -1647,6 +1708,46 @@ export default function EconomicsViz() {
               <div key={i} style={{ fontSize: 10, color: "#7a7a6a", lineHeight: 1.65, display: "flex", gap: 6 }}>
                 <span style={{ color: "#2f5202", flexShrink: 0 }}>→</span>{s}
               </div>
+            ))}
+          </div>
+        </div>
+        <div style={{
+          marginTop: 22,
+          paddingTop: 18,
+          borderTop: "1px solid rgba(47,82,2,0.12)",
+        }}>
+          <div style={{ fontSize: 9, color: "#2f5202", fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>
+            Download Review Pack
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            {[
+              { href: "/tcu-stats-companion-guide-2026-04-01-solidline.pdf", label: "Companion Guide PDF" },
+              { href: "/tcu-stats-fact-check.pdf", label: "Fact-Check PDF" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                download
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "10px 14px",
+                  borderRadius: 10,
+                  background: "linear-gradient(180deg, #f0f4e6 0%, #e7edd8 100%)",
+                  border: "1px solid rgba(106,157,42,0.28)",
+                  color: "#264700",
+                  textDecoration: "none",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+                }}
+              >
+                <span style={{ fontSize: 14, lineHeight: 1 }}>↓</span>
+                {item.label}
+              </a>
             ))}
           </div>
         </div>

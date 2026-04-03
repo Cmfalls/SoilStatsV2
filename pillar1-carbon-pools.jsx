@@ -18,8 +18,8 @@ const DEBT_DATA = [
   { year: -4000, lost: 22 }, { year: -2000, lost: 30 }, { year: 0, lost: 35 },
   { year: 500, lost: 38 }, { year: 1000, lost: 42 }, { year: 1500, lost: 48 },
   { year: 1700, lost: 52 }, { year: 1800, lost: 60 }, { year: 1850, lost: 72 },
-  { year: 1900, lost: 88 }, { year: 1950, lost: 100 }, { year: 1980, lost: 108 },
-  { year: 2000, lost: 113 }, { year: 2017, lost: 116 },
+  { year: 1900, lost: 92 }, { year: 1950, lost: 108 }, { year: 1980, lost: 120 },
+  { year: 2000, lost: 128 }, { year: 2017, lost: 133 },
 ];
 
 const SEQUESTRATION = [
@@ -405,7 +405,7 @@ function MyceliumNetwork() {
 function DebtChart() {
   const [visible, setVisible] = useState(false);
   const ref = useRef(null);
-  const maxLost = 116;
+  const maxLost = 133;
   const chartW = 860, chartH = 340;
   const padL = 76, padR = 18, padT = 28, padB = 64;
   const plotW = chartW - padL - padR;
@@ -456,7 +456,7 @@ function DebtChart() {
       </defs>
 
       {/* Y-axis grid lines */}
-      {[0, 29, 58, 87, 116].map((v) => (
+      {[0, 33, 66, 100, 133].map((v) => (
         <g key={v}>
           <line
             x1={padL} x2={chartW - padR} y1={yScale(v)} y2={yScale(v)}
@@ -556,12 +556,12 @@ function DebtChart() {
           <text x={xScale(1800) - 48} y={yScale(60) - 10} textAnchor="middle" fill="#5a5a4a" fontSize={9.25} fontFamily="Arial, sans-serif" fontWeight={600}>farming begins</text>
 
           {/* End point */}
-          <circle cx={xScale(2017)} cy={yScale(116)} r={7} fill="#e74c3c" />
-          <circle cx={xScale(2017)} cy={yScale(116)} r={14} fill="#e74c3c" opacity={0.18} />
-          <line x1={xScale(2017)} y1={yScale(116) + 8} x2={xScale(2017) - 57} y2={endLabelY} stroke="rgba(231,76,60,0.45)" strokeWidth={1} strokeDasharray="3,3" />
+          <circle cx={xScale(2017)} cy={yScale(133)} r={7} fill="#e74c3c" />
+          <circle cx={xScale(2017)} cy={yScale(133)} r={14} fill="#e74c3c" opacity={0.18} />
+          <line x1={xScale(2017)} y1={yScale(133) + 8} x2={xScale(2017) - 57} y2={endLabelY} stroke="rgba(231,76,60,0.45)" strokeWidth={1} strokeDasharray="3,3" />
           <rect x={xScale(2017) - 114} y={endLabelY} width={110} height={32} rx={5} fill="rgba(255,255,255,0.97)" stroke="rgba(231,76,60,0.4)" strokeWidth={1} />
-          <text x={xScale(2017) - 59} y={endLabelY + 14} textAnchor="middle" fill="#e74c3c" fontSize={14} fontFamily="'Bebas Neue', Arial, sans-serif" letterSpacing={1}>116 GT C LOST</text>
-          <text x={xScale(2017) - 59} y={endLabelY + 27} textAnchor="middle" fill="#5a5a4a" fontSize={9} fontFamily="Arial, sans-serif">= 425 Gt CO2 equivalent</text>
+          <text x={xScale(2017) - 59} y={endLabelY + 14} textAnchor="middle" fill="#e74c3c" fontSize={14} fontFamily="'Bebas Neue', Arial, sans-serif" letterSpacing={1}>133 GT C LOST</text>
+          <text x={xScale(2017) - 59} y={endLabelY + 27} textAnchor="middle" fill="#5a5a4a" fontSize={9} fontFamily="Arial, sans-serif">= 488 Gt CO2 equivalent</text>
         </>
       )}
     </svg>
@@ -591,8 +591,8 @@ function RecoveryArc() {
     return `M${s.x},${s.y} A${radius},${radius} 0 ${large},1 ${e.x},${e.y}`;
   };
 
-  const minPct = 42 / 116;
-  const maxPct = 78 / 116;
+  const minPct = 42 / 133;
+  const maxPct = 78 / 133;
 
   const minPt = arcPt(minPct);
   const maxPt = arcPt(maxPct);
@@ -648,7 +648,7 @@ function RecoveryArc() {
         <text x={cx + r + 2} y={cy + 58} textAnchor="start" fill="#7a7a6a" fontSize={8.5} fontFamily="Arial, sans-serif">full debt range</text>
       </svg>
       <div style={{ fontSize: 11.5, color: "#6a6a5a", marginTop: 10, lineHeight: 1.55 }}>
-        The green segment shows the independent historic loss estimate (Lal 2004, Science: 42–78 Gt C) within the corrected Sanderman 2018 total of 116 Gt C. A meaningful portion of this is biologically recoverable.
+        The green segment shows the independent recovery opportunity range (Lal 2004, Science: 42–78 Gt C) within the 133 Gt C soil carbon debt estimated by Sanderman et al., 2017. This is the drawdown portion the site is focused on.
       </div>
     </div>
   );
@@ -1078,37 +1078,27 @@ export default function CarbonPools() {
         <div style={{
           position: "absolute", inset: 0,
           backgroundImage: "url(/soil-hands-golden.webp)",
-          backgroundSize: "cover", backgroundPosition: "center 40%",
+          backgroundSize: "cover", backgroundPosition: "center 28%",
         }} />
         {/* Layered gradient for depth */}
         <div style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(135deg, rgba(14,15,10,0.55) 0%, rgba(14,15,10,0.25) 50%, rgba(14,15,10,0.6) 100%)",
+          background: "linear-gradient(90deg, rgba(14,15,10,0.82) 0%, rgba(14,15,10,0.66) 38%, rgba(14,15,10,0.34) 70%, rgba(14,15,10,0.18) 100%)",
         }} />
         <div style={{
           position: "absolute", inset: 0,
           background: "linear-gradient(to bottom, rgba(14,15,10,0) 0%, rgba(14,15,10,0.75) 60%, #f5f4ee 100%)",
         }} />
-
-        {/* Floating stat badge */}
         <div style={{
-          position: "absolute", top: 20, right: 20,
-          background: "rgba(255,255,255,0.82)",
-          border: "1px solid rgba(192,57,43,0.32)",
-          borderRadius: 10, padding: "10px 14px",
-          textAlign: "center", backdropFilter: "blur(12px)",
-          boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
-        }}>
-          <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 34, color: "#e74c3c", lineHeight: 1 }}>116</div>
-          <div style={{ fontSize: 9, color: "#5a5a4a", letterSpacing: 1.2, marginTop: 2 }}>GT C STRIPPED</div>
-          <div style={{ fontSize: 8, color: "#7a7a6a", marginTop: 2 }}>from global soils</div>
-          <div style={{
-            marginTop: 8, padding: "4px 0 0", borderTop: "1px solid rgba(192,57,43,0.2)",
-            fontSize: 8, color: "#e74c3c", letterSpacing: 0.5,
-          }}>= 425 Gt CO2 equivalent</div>
-        </div>
+          position: "absolute",
+          inset: 0,
+          background: "radial-gradient(circle at 34% 38%, rgba(38,52,15,0.18) 0%, rgba(38,52,15,0.08) 24%, rgba(38,52,15,0) 52%)",
+        }} />
 
-        <header style={{ position: "relative", zIndex: 1, padding: "60px 32px 44px", maxWidth: 920, margin: "0 auto" }}>
+        <header style={{ position: "relative", zIndex: 1, padding: "64px 32px 44px", maxWidth: 920, margin: "0 auto" }}>
+          <div style={{
+            maxWidth: 860,
+          }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             fontSize: 10, letterSpacing: 3, textTransform: "uppercase",
@@ -1121,36 +1111,97 @@ export default function CarbonPools() {
           </div>
           <h1 style={{
             fontFamily: "'Bebas Neue', Arial, sans-serif",
-            fontSize: "clamp(46px, 7vw, 86px)",
+            fontSize: "clamp(36px, 5.4vw, 68px)",
             lineHeight: 0.95, margin: 0,
             color: "#ffffff",
             textShadow: "0 2px 40px rgba(0,0,0,0.9)",
             letterSpacing: 0.5,
           }}>
-            The Carbon Beneath<br />
-            <span style={{ color: "#6a9d2a" }}>Our Feet</span>
+            Soil Carbon<br />
+            <span style={{ color: "#6a9d2a" }}>Is Climate Infrastructure</span>
           </h1>
-          <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 15.5, lineHeight: 1.75, marginTop: 20, maxWidth: 540 }}>
-            Soil stores <strong style={{ color: "#dce7cb" }}>~3x more carbon</strong> than the atmosphere. Industrial farming has stripped 116 billion tons. A living underground network - invisible to most - holds the key to reversing climate change.
+          <p style={{ color: "rgba(255,255,255,0.92)", fontSize: 15.5, lineHeight: 1.78, marginTop: 20, maxWidth: 600 }}>
+            Soil stores <strong style={{ color: "#dce7cb" }}>~3x more carbon</strong> than the atmosphere. Human land use has stripped roughly 133 billion tons of carbon from the top two meters of global soils. Rebuilding that underground carbon is not just soil restoration. It is climate drawdown.
           </p>
 
-          {/* Key stat row */}
-          <div style={{ display: "flex", gap: 12, marginTop: 24, flexWrap: "wrap" }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: 8,
+            marginTop: 24,
+            maxWidth: 700,
+          }}>
             {[
-              { val: "2,500 Gt C", label: "in soils", color: "#8B5E3C" },
-              { val: "116 Gt C", label: "lost", color: "#e74c3c" },
-              { val: "42-78 Gt C", label: "recoverable", color: "#6a9d2a" },
-            ].map((s, i) => (
-              <div key={i} style={{
-                display: "flex", alignItems: "center", gap: 10,
-                background: "rgba(255,255,255,0.84)", backdropFilter: "blur(8px)",
-                padding: "7px 12px", borderRadius: 8,
-                border: `1px solid ${s.color}30`,
-              }}>
-                <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 18, color: s.color, lineHeight: 1 }}>{s.val}</div>
-                <div style={{ fontSize: 11, color: "#6a6a5a" }}>{s.label}</div>
+              {
+                title: "Historic loss",
+                stat: "133 Gt C",
+                statLabel: "stripped from soil",
+                text: "industrial agriculture stripped stored carbon from soil into the atmosphere.",
+                accent: "#e74c3c",
+              },
+              {
+                title: "Atmospheric burden",
+                stat: "2,500 Gt C",
+                statLabel: "stored in soils",
+                text: "soil remains the planet's largest land-based carbon reservoir, with roughly three times as much carbon as the atmosphere.",
+                accent: "#8B5E3C",
+              },
+              {
+                title: "Biological drawdown",
+                stat: "154-286 Gt CO2",
+                statLabel: "recoverable range",
+                text: "rebuilding soil carbon is one of the few scalable removal pathways we control.",
+                accent: "#6a9d2a",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                style={{
+                  padding: "11px 12px 10px",
+                  borderRadius: 12,
+                  background: "rgba(14,15,10,0.32)",
+                  backdropFilter: "blur(6px)",
+                  border: `1px solid ${item.accent}33`,
+                  display: "grid",
+                  gap: 6,
+                }}
+              >
+                <div style={{
+                  fontSize: 10,
+                  letterSpacing: 1.6,
+                  textTransform: "uppercase",
+                  color: item.accent,
+                  fontWeight: 700,
+                  marginBottom: 2,
+                  textShadow: "0 1px 10px rgba(0,0,0,0.22)",
+                }}>
+                  {item.title}
+                </div>
+                <div>
+                  <div style={{
+                    fontFamily: "'Bebas Neue', Arial, sans-serif",
+                    fontSize: item.stat.length > 10 ? 24 : 30,
+                    lineHeight: 0.92,
+                    color: "#ffffff",
+                    marginBottom: 1,
+                  }}>
+                    {item.stat}
+                  </div>
+                  <div style={{
+                    fontSize: 10.5,
+                    lineHeight: 1.35,
+                    color: item.accent,
+                    letterSpacing: 0.7,
+                    textTransform: "uppercase",
+                    fontWeight: 700,
+                    textShadow: "0 1px 10px rgba(0,0,0,0.22)",
+                  }}>
+                    {item.statLabel}
+                  </div>
+                </div>
               </div>
             ))}
+          </div>
           </div>
         </header>
       </div>
@@ -1168,9 +1219,9 @@ export default function CarbonPools() {
           {[
             { label: "2,500 Gt C", sub: "in global soils" },
             { label: "~2.8x", sub: "more than atmosphere" },
-            { label: "116 Gt C", sub: "stripped by farming" },
+            { label: "133 Gt C", sub: "stripped by farming" },
             { label: "13.12 Gt CO2e", sub: "moved by fungi annually" },
-            { label: "42-78 Gt C", sub: "biologically recoverable" },
+            { label: "154-286 Gt CO2", sub: "drawdown opportunity" },
           ].map((item, i) => (
             <span key={i} style={{
               display: "inline-flex", alignItems: "center", gap: 7,
@@ -1269,7 +1320,7 @@ export default function CarbonPools() {
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 14 }}>
                     {[
                       { val: "75%", label: "of terrestrial carbon stored underground" },
-                      { val: "10,000+", label: "microbial species per teaspoon of soil" },
+                      { val: "1B", label: "bacterial cells per gram of healthy soil" },
                     ].map((s, i) => (
                       <div key={i} style={{
                         padding: "15px 16px",
@@ -1408,7 +1459,7 @@ export default function CarbonPools() {
                   {[
                     { num: "75%", label: "Of all terrestrial carbon stored underground", color: "#6a9d2a" },
                     { num: "2,500", label: "Gigatons in global soils - top 2 meters only", color: "#8B5E3C" },
-                    { num: "10,000+", label: "Microbial species per teaspoon of healthy soil", color: "#6a9d2a" },
+                    { num: "1B", label: "Bacterial cells per gram of healthy soil", color: "#6a9d2a" },
                   ].map((s, i) => (
                     <div key={i} style={{
                       display: "flex", gap: 14, alignItems: "flex-start",
@@ -1576,7 +1627,7 @@ export default function CarbonPools() {
               <StatCard
                 value="1 Billion"
                 label="Bacteria per gram of soil"
-                sub="10,000+ species in a single teaspoon. More biodiversity underground than in any rainforest."
+                sub="A single gram of healthy soil can contain hundreds of millions to a billion bacterial cells. The climate drawdown story depends on that biological workforce."
                 color="#6a9d2a" delay={0} watermark={false}
               />
               <StatCard
@@ -1816,7 +1867,7 @@ export default function CarbonPools() {
                     fontFamily: "'Bebas Neue', Arial, sans-serif",
                     fontSize: "clamp(42px, 6vw, 70px)",
                     color: "#ff5b47", lineHeight: 1,
-                  }}>116</div>
+                  }}>133</div>
                   <div style={{ fontSize: 10, color: "#d4a9a0", letterSpacing: 1.4, marginTop: 2 }}>GIGATONS</div>
                   <div style={{ fontSize: 9, color: "#e5c5bf" }}>of carbon lost</div>
                 </div>
@@ -1825,7 +1876,7 @@ export default function CarbonPools() {
                     Stripped from global soils over 12,000 years of human land use
                   </div>
                   <div style={{ fontSize: 13.5, color: "#f0d3cd", lineHeight: 1.7 }}>
-                    425 Gt CO2 equivalent - the largest human-caused biogeochemical disruption in Earth's history.
+                    488 Gt CO2 equivalent already in the atmosphere - legacy carbon that net zero alone does not remove.
                   </div>
                   <div style={{ fontSize: 11, color: "#d9b7b0", marginTop: 8 }}>
                     Source: Sanderman et al., 2017, <em>PNAS</em>.
@@ -1853,16 +1904,64 @@ export default function CarbonPools() {
               </div>
             </FadeIn>
 
+            <FadeIn delay={140}>
+              <InsightBox color="#c0392b">
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#e74c3c", marginBottom: 8, letterSpacing: 1, textTransform: "uppercase" }}>
+                  The TCU 2.0 Thesis
+                </div>
+                <div style={{ fontSize: 13.5, color: "#2a2a1e", lineHeight: 1.75 }}>
+                  <strong style={{ color: "#1a1a12" }}>Net zero stops the bleeding. Drawdown heals the wound.</strong>{" "}
+                  This 488 Gt CO2 is already in the atmosphere. Returning even part of it to soil is why biological systems matter to climate strategy.
+                </div>
+              </InsightBox>
+            </FadeIn>
+
             {/* 3 crisis stats */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 14 }}>
               {[
-                { val: "116 Gt C", label: "Total soil carbon debt", sub: "425 Gt CO2 equivalent - about 11x annual global emissions", color: "#c0392b", accent: "rgba(192,57,43,0.25)" },
+                { val: "133 Gt C", label: "Total soil carbon debt", sub: "488 Gt CO2 equivalent - about 12x annual global emissions", color: "#c0392b", accent: "rgba(192,57,43,0.25)" },
                 { val: "50-70%", label: "Original carbon now gone", sub: "From cultivated soils worldwide since agriculture began", color: "#c0392b", accent: "rgba(192,57,43,0.2)" },
-                { val: "2.5 Mg/ha", label: "Additional loss 1919-2018", sub: "From climate change alone, independent of land use decisions", color: "#e74c3c", accent: "rgba(231,76,60,0.2)" },
+                { val: "154-286 Gt CO2", label: "Biologically recoverable", sub: "Roughly 4-7 years of current CO2 emissions if returned to soil", color: "#6a9d2a", accent: "rgba(106,157,42,0.22)" },
               ].map((c, i) => (
                 <StatCard key={i} value={c.val} label={c.label} sub={c.sub} color={c.color} accent={c.accent} delay={i * 100} watermark={false} />
               ))}
             </div>
+
+            <FadeIn delay={120}>
+              <div style={{
+                padding: "22px 24px",
+                background: "linear-gradient(135deg, #edf5db 0%, #f5f4ee 100%)",
+                borderRadius: 14,
+                border: "1px solid rgba(106,157,42,0.28)",
+              }}>
+                <div style={{ fontSize: 10, letterSpacing: 2, textTransform: "uppercase", color: "#6a9d2a", marginBottom: 12 }}>
+                  Remaining Carbon Budget Context
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12 }}>
+                  {[
+                    { val: "235 Gt CO2", label: "1.5C budget", sub: "about 6 years at current emissions" },
+                    { val: "585 Gt CO2", label: "1.7C budget", sub: "about 14 years at current emissions" },
+                    { val: "1,110 Gt CO2", label: "2.0C budget", sub: "about 27 years at current emissions" },
+                  ].map((item) => (
+                    <div key={item.label} style={{
+                      padding: "16px 14px",
+                      background: "rgba(255,255,255,0.7)",
+                      borderRadius: 10,
+                      border: "1px solid rgba(106,157,42,0.14)",
+                    }}>
+                      <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 30, lineHeight: 1, color: "#1a1a12", marginBottom: 6 }}>
+                        {item.val}
+                      </div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#1a1a12", marginBottom: 4 }}>{item.label}</div>
+                      <div style={{ fontSize: 11, color: "#6a6a5a", lineHeight: 1.5 }}>{item.sub}</div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ fontSize: 11, color: "#6a6a5a", lineHeight: 1.6, marginTop: 12 }}>
+                  Source frame: Global Carbon Budget 2024 / 2025. The recoverable soil-carbon range shown above is large enough to matter at carbon-budget scale, which is why the drawdown framing belongs in the public story.
+                </div>
+              </div>
+            </FadeIn>
 
             {/* Biome conversion */}
             <FadeIn delay={160}>
@@ -1924,7 +2023,7 @@ export default function CarbonPools() {
                     A significant share of degraded soils retain biological sink capacity
                   </div>
                   <div style={{ fontSize: 13.5, color: "#2a2a1e", lineHeight: 1.75, marginBottom: 18 }}>
-                    Independent estimates place historic soil carbon loss at <strong style={{ color: "#1a1a12" }}>42–78 Gt C</strong> (Lal 2004, Science), with 50–66% considered biologically recoverable through regenerative management.
+                    Independent estimates place the biologically recoverable opportunity at <strong style={{ color: "#1a1a12" }}>42–78 Gt C</strong> (Lal 2004, Science). Against a 133 Gt C soil carbon debt, that is roughly one-third to three-fifths of the total legacy loss.
                   </div>
                   <div style={{
                     marginBottom: 18,
@@ -1936,7 +2035,7 @@ export default function CarbonPools() {
                     color: "#5b5b4d",
                     lineHeight: 1.65,
                   }}>
-                    Read the arc like this: the <strong style={{ color: "#3d6a10" }}>green band</strong> shows the independent historic loss range (Lal 2004, Science: 42–78 Gt C) within the corrected 116 Gt total (Sanderman et al. 2018, PNAS). A significant portion of this is considered biologically recoverable.
+                    Read the arc like this: the <strong style={{ color: "#3d6a10" }}>green band</strong> shows the independent recovery range (Lal 2004, Science: 42–78 Gt C) against the full 133 Gt soil carbon debt estimated by Sanderman et al., 2017. That is the portion this site treats as drawdown opportunity.
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                     {[
@@ -2106,6 +2205,9 @@ export default function CarbonPools() {
                     </div>
                   ))}
                 </div>
+                <div style={{ fontSize: 12.5, color: "#2a2a1e", lineHeight: 1.65, marginTop: 14 }}>
+                  Rodale's long-run result is climate evidence as much as farming evidence: the same system delivered <strong style={{ color: "#1a1a12" }}>lower emissions and higher drought yields</strong> from the same soil intervention.
+                </div>
               </div>
             </FadeIn>
 
@@ -2164,7 +2266,7 @@ export default function CarbonPools() {
                     107 million metric tons of CO2e sequestered annually
                   </div>
                   <div style={{ fontSize: 13.5, color: "#2a2a1e", lineHeight: 1.75 }}>
-                    Without changing a single farm's output. Without new technology. Without government mandates. The technology exists. The knowledge exists. The bottleneck is adoption - and that is exactly the gap The Edison Institute is positioned to close.
+                    Equivalent to removing roughly <strong style={{ color: "#1a1a12" }}>25 million passenger vehicles</strong> from the road each year. Without changing a single farm's output. Without new technology. The bottleneck is adoption - and that is exactly the gap The Edison Institute is positioned to close.
                   </div>
                 </div>
               </div>
@@ -2222,6 +2324,46 @@ export default function CarbonPools() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+        <div style={{
+          marginTop: 22,
+          paddingTop: 18,
+          borderTop: "1px solid rgba(47,82,2,0.12)",
+        }}>
+          <div style={{ fontSize: 9, color: "#2f5202", fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>
+            Download Review Pack
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            {[
+              { href: "/tcu-stats-companion-guide-2026-04-01-solidline.pdf", label: "Companion Guide PDF" },
+              { href: "/tcu-stats-fact-check.pdf", label: "Fact-Check PDF" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                download
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "10px 14px",
+                  borderRadius: 10,
+                  background: "linear-gradient(180deg, #f0f4e6 0%, #e7edd8 100%)",
+                  border: "1px solid rgba(106,157,42,0.28)",
+                  color: "#264700",
+                  textDecoration: "none",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+                }}
+              >
+                <span style={{ fontSize: 14, lineHeight: 1 }}>↓</span>
+                {item.label}
+              </a>
+            ))}
           </div>
         </div>
         <div style={{

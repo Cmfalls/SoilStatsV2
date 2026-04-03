@@ -353,13 +353,13 @@ function SOMSlider() {
   const currentStage = getCurrentSoilArtifactStage(som);
   const waterGal = som * 20000;
   const carbonTons = som * 5.8; // Van Bemmelen factor: SOC ≈ 58% of SOM weight
-  const economicsValue = som >= 3 ? "+78%" : som >= 2 ? "+30%" : "+5%";
+  const co2eTons = carbonTons * 3.67;
   const infiltrationRate = 100 + (som - 1) * 35; // Basche & DeLonge 2019 meta-analysis: cover crops +34.8% infiltration
   const microbialBiomass = 100 + (som - 1) * 30;
   const summaryStats = [
     { label: "Water", value: `${(waterGal / 1000).toFixed(0)}K`, sub: "held per acre", borderColor: "#5a8c1e" },
     { label: "Carbon", value: carbonTons.toFixed(0), sub: "tons C per acre", borderColor: "#8B5E3C" },
-    { label: "Economics", value: economicsValue, sub: "profit potential", borderColor: C.green },
+    { label: "Drawdown", value: co2eTons.toFixed(0), sub: "tons CO2e per acre", borderColor: "#c0392b" },
   ];
   const baselineCards = [
     {
@@ -397,11 +397,11 @@ function SOMSlider() {
             fontSize: 11,
             textTransform: "uppercase",
             letterSpacing: 3,
-            color: C.green,
+            color: C.red,
             marginBottom: 10,
             fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
           }}>
-            Interactive - Adjust Soil Organic Matter %
+            Interactive Climate Readout
           </div>
           <div style={{
             fontFamily: "'Bebas Neue', Arial, sans-serif",
@@ -411,7 +411,9 @@ function SOMSlider() {
             marginBottom: 8,
             textShadow: "0 1px 0 rgba(255,255,255,0.4)",
           }}>
-            Soil Organic Matter
+            Move Soil Carbon.
+            <br />
+            <span style={{ color: C.green }}>Change Climate Outcomes.</span>
           </div>
           <div style={{
             maxWidth: 640,
@@ -419,7 +421,7 @@ function SOMSlider() {
             color: C.textSec,
             lineHeight: 1.65,
           }}>
-            Slide upward to watch the soil profile densify, darken, and hold more carbon and water.
+            Slide upward to watch the soil profile densify, darken, hold more water, and pull more carbon back out of the atmosphere.
           </div>
         </div>
 
@@ -437,6 +439,53 @@ function SOMSlider() {
         }}>
           Live readout
         </div>
+      </div>
+
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+        gap: 12,
+        marginBottom: 18,
+      }}>
+        {[
+          { label: "Water buffered", value: `${(waterGal / 1000).toFixed(0)}K gal`, note: "per acre at this SOM level", color: "#5a8c1e" },
+          { label: "Carbon stored", value: `${carbonTons.toFixed(1)} tons C`, note: "living belowground capital", color: "#8B5E3C" },
+          { label: "Climate impact", value: `${co2eTons.toFixed(1)} tons CO2e`, note: "atmospheric drawdown equivalent", color: "#c0392b" },
+        ].map((item) => (
+          <div
+            key={item.label}
+            style={{
+              padding: "14px 16px",
+              borderRadius: 16,
+              background: "linear-gradient(180deg, rgba(255,255,255,0.88) 0%, rgba(247,249,239,0.96) 100%)",
+              border: `1px solid ${hexToRgba(item.color, 0.18)}`,
+              boxShadow: "0 10px 20px rgba(45, 58, 16, 0.06)",
+            }}
+          >
+            <div style={{
+              fontSize: 10,
+              textTransform: "uppercase",
+              letterSpacing: 2.2,
+              color: item.color,
+              marginBottom: 8,
+              fontWeight: 700,
+            }}>
+              {item.label}
+            </div>
+            <div style={{
+              fontFamily: "'Bebas Neue', Arial, sans-serif",
+              fontSize: "clamp(28px, 4vw, 40px)",
+              lineHeight: 0.95,
+              color: C.text,
+              marginBottom: 4,
+            }}>
+              {item.value}
+            </div>
+            <div style={{ fontSize: 12, color: C.textMuted, lineHeight: 1.45 }}>
+              {item.note}
+            </div>
+          </div>
+        ))}
       </div>
 
       <div style={{
@@ -518,7 +567,7 @@ function SOMSlider() {
             color: C.textMuted,
             marginBottom: 14,
           }}>
-            What Changes Fastest
+            Climate Impact Snapshot
           </div>
           <div style={{
             position: "relative",
@@ -555,14 +604,14 @@ function SOMSlider() {
             marginBottom: 0,
             maxWidth: 300,
           }}>
-            More SOM means more water, more carbon, and stronger farm resilience.
+            More SOM means more stored carbon, more water buffering, and a stronger on-farm climate defense.
           </div>
           </div>
 
           <div style={{
             position: "relative",
             display: "grid",
-            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+            gridTemplateColumns: `repeat(${summaryStats.length}, minmax(0, 1fr))`,
             gap: 10,
             marginTop: "auto",
             alignItems: "stretch",
@@ -688,34 +737,34 @@ function SOMSlider() {
 const CRISIS = [
   {
     pillar: "Carbon",
-    stat: "116 Gt C",
-    label: "Global soil carbon lost",
-    context: "since farming began",
-    signal: "historic depletion",
+    stat: "133 Gt C",
+    label: "Legacy soil carbon released",
+    context: "now warming the atmosphere",
+    signal: "climate debt",
     accent: "#8B5E3C",
   },
   {
     pillar: "Economics",
     stat: "$500M+/yr",
-    label: "Annual input losses",
-    context: "US corn (Jang 2020)",
-    signal: "annual drag",
+    label: "Documented fertilizer losses",
+    context: "US corn, degraded-soil cost",
+    signal: "financial stress",
     accent: "#9c7650",
   },
   {
     pillar: "Water",
     stat: "71%",
-    label: "Aquifers are declining",
-    context: "of 1,700 studied",
-    signal: "resource decline",
+    label: "Aquifers in decline",
+    context: "warming plus overdraw",
+    signal: "water stress",
     accent: "#4a8fb5",
   },
   {
     pillar: "Climate",
     stat: "$320B",
-    label: "Climate disaster losses",
-    context: "2024 global record",
-    signal: "record losses",
+    label: "Cost of climate damage",
+    context: "price tag of system failure",
+    signal: "visible consequence",
     accent: "#7e6b59",
   },
 ];
@@ -886,8 +935,135 @@ function CrisisBubbleGrid() {
   );
 }
 
+function ClimateThroughlinePanel() {
+  const steps = [
+    {
+      title: "Soil Carbon Loss",
+      text: "Degraded land releases stored carbon and weakens biology.",
+      accent: "#8B5E3C",
+    },
+    {
+      title: "Atmospheric Warming",
+      text: "More greenhouse gases intensify heat, drought, floods, and volatility.",
+      accent: "#c0392b",
+    },
+    {
+      title: "Economic Stress",
+      text: "Farm margins tighten as input dependence and climate shocks rise together.",
+      accent: "#6a9d2a",
+    },
+    {
+      title: "Water Instability",
+      text: "Hotter air and weaker soils drain aquifers faster and hold less rainfall.",
+      accent: "#4a8fb5",
+    },
+  ];
+
+  return (
+    <div style={{
+      marginTop: 6,
+      padding: "26px 24px 24px",
+      borderRadius: 24,
+      background: "linear-gradient(135deg, rgba(20,24,14,0.96) 0%, rgba(38,49,17,0.96) 52%, rgba(22,29,13,0.98) 100%)",
+      border: "1px solid rgba(106,157,42,0.24)",
+      boxShadow: "0 18px 34px rgba(18, 24, 9, 0.18)",
+      overflow: "hidden",
+      position: "relative",
+    }}>
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        background: "radial-gradient(circle at 18% 14%, rgba(192,57,43,0.16) 0%, rgba(192,57,43,0) 28%), radial-gradient(circle at 82% 18%, rgba(106,157,42,0.14) 0%, rgba(106,157,42,0) 24%)",
+        pointerEvents: "none",
+      }} />
+      <div style={{ position: "relative" }}>
+        <div style={{
+          fontSize: 10,
+          letterSpacing: 2.4,
+          textTransform: "uppercase",
+          color: "#b9cb94",
+          marginBottom: 12,
+          fontWeight: 700,
+        }}>
+          Overview
+        </div>
+        <div style={{
+          fontFamily: "'Bebas Neue', Arial, sans-serif",
+          fontSize: "clamp(34px, 4.6vw, 54px)",
+          lineHeight: 0.97,
+          color: "#ffffff",
+          marginBottom: 12,
+        }}>
+          How the Crisis
+          <br />
+          <span style={{ color: "#9dd15a" }}>Shows Up.</span>
+        </div>
+        <div style={{
+          color: "rgba(232,238,220,0.72)",
+          fontSize: 11,
+          lineHeight: 1.4,
+          letterSpacing: 2.2,
+          textTransform: "uppercase",
+          margin: "0 0 18px",
+          fontWeight: 700,
+        }}>
+          Measured across carbon, cost, and water.
+        </div>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          gap: 14,
+        }}>
+          {CRISIS.map((item, index) => (
+            <div
+              key={item.pillar}
+              style={{
+                padding: "16px 14px 14px",
+                borderRadius: 16,
+                background: "rgba(255,255,255,0.06)",
+                border: `1px solid ${hexToRgba(item.accent, 0.28)}`,
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
+                display: "grid",
+                gap: 8,
+              }}
+            >
+              <div style={{
+                fontSize: 10,
+                letterSpacing: 2,
+                textTransform: "uppercase",
+                color: item.accent,
+                fontWeight: 700,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}>
+                <span>{item.pillar}</span>
+                <span style={{ color: "rgba(232,238,220,0.46)" }}>0{index + 1}</span>
+              </div>
+              <div style={{
+                fontFamily: "'Bebas Neue', Arial, sans-serif",
+                fontSize: item.stat.length > 6 ? 36 : 42,
+                lineHeight: 0.92,
+                color: "#ffffff",
+              }}>
+                {item.stat}
+              </div>
+              <div style={{ fontSize: 13, lineHeight: 1.45, color: "#ffffff", fontWeight: 600 }}>
+                {item.label}
+              </div>
+              <div style={{ fontSize: 11.5, lineHeight: 1.5, color: "rgba(232,238,220,0.74)" }}>
+                {item.context}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const SOLUTION = [
-  { icon: "/icons/evidence-carbon-sequestered.webp", stat: "0.3-1.0", unit: "Mg C/ha/yr", label: "Carbon sequestered by regenerative practices", color: C.green, iconScale: 1.04 },
+  { icon: "/icons/evidence-carbon-sequestered.webp", stat: "0.30-1.00", unit: "Mg C/ha/yr", label: "Annual soil carbon gain across the featured regenerative practices", color: C.green, iconScale: 1.04 },
   { icon: "/icons/evidence-higher-profits.webp",     stat: "+78%",    label: "Higher profits on regen farms (LaCanne & Lundgren)",   color: C.green, iconScale: 1.18 },
   { icon: "/icons/evidence-water-infiltration.webp", stat: "+35%",    label: "Water infiltration improvement from cover crops",      color: C.green, iconScale: 1.15 },
   { icon: "/icons/evidence-carbon-moved.webp",       stat: "13.12 Gt", unit: "CO2e/yr", label: "Carbon moved by mycorrhizal fungi networks", color: C.green, iconScale: 1.08 },
@@ -965,19 +1141,19 @@ export default function UnifiedViz() {
           padding: "42px 24px 46px",
         }}>
           <div style={{
-            maxWidth: 760,
+            maxWidth: 820,
             margin: "0 auto",
             textAlign: "center",
             background: "rgba(245,244,238,0.82)",
             backdropFilter: "blur(8px)",
             border: `1px solid ${C.border}`,
             borderRadius: 14,
-            padding: "22px 24px 24px",
+            padding: "26px 34px 28px",
             boxShadow: "0 10px 28px rgba(0,0,0,0.12)",
           }}>
             <div style={{
-              fontSize: 10,
-              letterSpacing: 2.2,
+              fontSize: 11,
+              letterSpacing: 2,
               textTransform: "uppercase",
               color: C.green,
               marginBottom: 12,
@@ -986,19 +1162,17 @@ export default function UnifiedViz() {
             </div>
             <h1 style={{
               fontFamily: "'Bebas Neue', Arial, sans-serif",
-              fontSize: "clamp(36px, 6.5vw, 68px)",
-              lineHeight: 0.96,
-              margin: "0 0 14px",
+              fontSize: "clamp(38px, 6.2vw, 70px)",
+              lineHeight: 0.98,
+              margin: "0 0 16px",
               color: C.text,
-              letterSpacing: 1,
+              letterSpacing: 0.5,
             }}>
-              <span style={{ color: C.green }}>Three Crises.</span>
-              <br />One Solution.
+              <span style={{ color: C.red }}>One Climate Crisis.</span>
+              <br />Three Linked Systems.
             </h1>
-            <p style={{ color: C.textSec, fontSize: 15, lineHeight: 1.65, maxWidth: 620, margin: "0 auto" }}>
-              Soil organic matter is the thread connecting carbon storage, farm profitability, and water security.
-              When soil health declines, everything declines.{" "}
-              <strong style={{ color: C.text }}>When we rebuild, everything recovers.</strong>
+            <p style={{ color: C.textSec, fontSize: 16, lineHeight: 1.55, maxWidth: 680, margin: "0 auto" }}>
+              Carbon loss drives warming. Warming drives cost and water stress. Together, they strain the food system.
             </p>
           </div>
         </header>
@@ -1016,7 +1190,7 @@ export default function UnifiedViz() {
           fontSize: "clamp(13px, 2vw, 17px)",
           letterSpacing: 3, color: "#ffffff", textTransform: "uppercase",
         }}>
-          Rebuild the Soil - Store the Carbon - Hold the Water - Feed the World
+          Climate Pressure Moves Through Carbon, Economics, and Water
         </span>
       </div>
 
@@ -1024,17 +1198,17 @@ export default function UnifiedViz() {
 
         {/* â”€â”€ The Crisis â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div style={{ marginTop: 56, marginBottom: 40 }}>
-          <SectionHeader title="The Scale of the Crisis" />
+          <SectionHeader title="How Climate Shows Up" />
           <p style={{
-            margin: "0 0 18px",
+            margin: "0 0 22px",
             color: C.textMuted,
-            fontSize: 15,
+            fontSize: 14,
             lineHeight: 1.65,
-            maxWidth: 560,
+            maxWidth: 760,
           }}>
-            Four ways the same soil crisis shows up.
+            This shows up in yield stability, costs, and water limits.
           </p>
-          <CrisisBubbleGrid />
+          <ClimateThroughlinePanel />
         </div>
 
         {/* â”€â”€ Interactive Slider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
@@ -1121,25 +1295,27 @@ export default function UnifiedViz() {
               lineHeight: 1.65,
               maxWidth: 760,
             }}>
-              Each pillar quantifies one part of the same system. Together they show why soil restoration is a climate, water, and profitability strategy.
+              Each pillar measures a different expression of the same climate problem. Together they show
+              why soil restoration is simultaneously a drawdown strategy, an economic strategy, and a
+              water strategy - and why food insecurity is where those pressures become public.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 18 }}>
               {[
                 {
                   num: "01", title: "Carbon Pools",
-                  desc: "Soil stores ~2.8x more carbon than the atmosphere. Mycorrhizal fungi move 13.12 Gt CO2e per year. 116 Gt C stripped since farming began.",
+                  desc: "The carbon pillar shows how much atmospheric warming is tied to soil carbon loss, and how much drawdown potential still remains underground.",
                   stats: ["2,500 Gt C in global soils", "1B bacteria / gram", "+45% SOC in 8 years (UC Davis)"],
                   color: "#8B5E3C",
                 },
                 {
                   num: "02", title: "Economics",
-                  desc: "Regenerative farms earn 78% higher profits. SHI 100-farm study: 85% of farmers saw net gains. $500M+/yr in excess fertilizer costs (Jang et al. 2020).",
-                  stats: ["$51.60/acre corn gain (SHI)", "-41% fertilizer (Gabe Brown)", "+120% long-term ROI (BCG)"],
+                  desc: "The economics pillar shows that climate risk is already a balance-sheet problem, and that regenerative profitability comes from rebuilding the same carbon cycle we need for drawdown.",
+                  stats: ["$51.60/acre corn gain (SHI)", "-41% fertilizer (Gabe Brown)", "+130% long-term ROI (BCG)"],
                   color: "#3a7010",
                 },
                 {
                   num: "03", title: "Water Security",
-                  desc: "20,000 gallons held per acre per 1% SOM gain. 71% of aquifers declining. California's Central Valley faces permanent loss of 500K-1M acres.",
+                  desc: "The water pillar shows climate change expressed through water: hotter air, weaker snowpack, deeper aquifer stress, and the outsized role of soil organic matter as a defense system.",
                   stats: ["87% CA water loss by 2043", "2M ac-ft/yr overdraft", "+35% infiltration (cover crops)"],
                   color: C.greenBright,
                 },
@@ -1183,6 +1359,15 @@ export default function UnifiedViz() {
                 </FadeIn>
               ))}
             </div>
+            <p style={{
+              margin: "18px 0 0",
+              color: C.textSec,
+              fontSize: 13,
+              lineHeight: 1.6,
+              maxWidth: 760,
+            }}>
+              At the farm level, this shows up as less stable yields, higher costs, and tighter water limits.
+            </p>
           </div>
         </FadeIn>
 
@@ -1199,18 +1384,16 @@ export default function UnifiedViz() {
               fontSize: 10, textTransform: "uppercase", letterSpacing: 3,
               color: C.green, marginBottom: 14, textAlign: "center", fontWeight: 700,
             }}>
-              The Investment Gap - The Edison Institute's Mandate
+              Capital Signals - The Edison Institute's Mandate
             </div>
             <div style={{ fontSize: 15, color: C.textSec, lineHeight: 1.75, maxWidth: 720, margin: "0 auto 28px", textAlign: "center" }}>
-              The science is settled. Regenerative agriculture can sequester carbon, restore aquifers, and
-              rebuild farm profitability simultaneously. The bottleneck is investment, research continuity,
-              and adoption at scale.
+              The strongest capital story is the one we can defend cleanly: major farm-economics analyses, investor reports, and public programs are already treating soil restoration as a climate-relevant asset class.
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
               {[
-                { val: "$200-450B", label: "Annual global investment needed",     sub: "To achieve soil restoration and climate impact at scale",       color: C.text,  borderColor: C.borderGreen },
-                { val: "<10%",      label: "Currently funded",                    sub: "Less than 10% of required capital is deployed globally",        color: C.red,   borderColor: C.borderRed },
-                { val: "31.9%",     label: "CAGR of carbon credit market",        sub: "$36M -> $648M by 2034. The market is forming - fast.",           color: C.green, borderColor: C.borderGreen },
+                { val: "$250B", label: "McKinsey decade-scale value", sub: "Incremental economic value from widespread regenerative adoption in US corn and soy.", color: C.text, borderColor: C.borderGreen },
+                { val: "130%", label: "BCG long-term ROI", sub: "Investor framing for regenerative transitions when resilience and land performance compound.", color: C.green, borderColor: C.borderGreen },
+                { val: "$2.8B", label: "USDA climate-smart commitment", sub: "Public capital already committed to climate-smart commodity and soil-transition programs.", color: C.green, borderColor: C.borderGreen },
               ].map((s, i) => (
                 <div key={i} style={{
                   padding: "12px 16px 14px", background: "rgba(255,255,255,0.86)",
@@ -1320,12 +1503,13 @@ export default function UnifiedViz() {
                 color: C.text, lineHeight: 1.4,
                 maxWidth: 600, margin: "0 auto 20px", letterSpacing: 1,
               }}>
-                Rebuild the Soil. Store the Carbon.<br />Hold the Water. Feed the World.
+                Rebuild the Soil. Store the Carbon.<br />Hold the Water. Strengthen Food Security.
               </div>
               <div style={{ fontSize: 14, color: C.textSec, lineHeight: 1.7, maxWidth: 520, margin: "0 auto 24px" }}>
                 The Edison Institute funds and publishes the long-term, whole-systems research that connects
-                these three crises to one solution - and makes the case for regenerative agriculture at the
-                scale of institutional capital.
+                these three crises to one solution - and makes the case for regenerative agriculture as
+                climate infrastructure, water infrastructure, and food-system resilience at the scale of
+                institutional capital.
               </div>
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
@@ -1377,6 +1561,46 @@ export default function UnifiedViz() {
               <div key={i} style={{ fontSize: 10, color: "#7a7a6a", lineHeight: 1.65, display: "flex", gap: 6 }}>
                 <span style={{ color: "#2f5202", flexShrink: 0 }}>→</span>{s}
               </div>
+            ))}
+          </div>
+        </div>
+        <div style={{
+          marginTop: 22,
+          paddingTop: 18,
+          borderTop: "1px solid rgba(47,82,2,0.12)",
+        }}>
+          <div style={{ fontSize: 9, color: "#2f5202", fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>
+            Download Review Pack
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            {[
+              { href: "/tcu-stats-companion-guide-2026-04-01-solidline.pdf", label: "Companion Guide PDF" },
+              { href: "/tcu-stats-fact-check.pdf", label: "Fact-Check PDF" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                download
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "10px 14px",
+                  borderRadius: 10,
+                  background: "linear-gradient(180deg, #f0f4e6 0%, #e7edd8 100%)",
+                  border: "1px solid rgba(106,157,42,0.28)",
+                  color: "#264700",
+                  textDecoration: "none",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+                }}
+              >
+                <span style={{ fontSize: 14, lineHeight: 1 }}>↓</span>
+                {item.label}
+              </a>
             ))}
           </div>
         </div>

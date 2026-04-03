@@ -92,7 +92,7 @@ function AnimatedNumber({ target, duration = 1400, prefix = "", suffix = "", dec
 }
 
 /* â"€â"€â"€ FadeIn â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
-function FadeIn({ children, delay = 0 }) {
+function FadeIn({ children, delay = 0, style }) {
   const [vis, setVis] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
@@ -100,16 +100,17 @@ function FadeIn({ children, delay = 0 }) {
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
-  return (
-    <div ref={ref} style={{
-      opacity: vis ? 1 : 0,
-      transform: vis ? "translateY(0)" : "translateY(18px)",
-      transition: `opacity 0.65s ease ${delay}ms, transform 0.65s ease ${delay}ms`,
-    }}>
-      {children}
-    </div>
-  );
-}
+    return (
+      <div ref={ref} style={{
+        opacity: vis ? 1 : 0,
+        transform: vis ? "translateY(0)" : "translateY(18px)",
+        transition: `opacity 0.65s ease ${delay}ms, transform 0.65s ease ${delay}ms`,
+        ...style,
+      }}>
+        {children}
+      </div>
+    );
+  }
 
 /* â"€â"€â"€ TabTransition â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 function TabTransition({ tabKey, children }) {
@@ -177,29 +178,48 @@ function TabIntro({ icon, headline, sub, accent = C.green }) {
   return (
     <FadeIn>
       <div style={{
-        padding: "20px 24px",
-        background: isRed ? C.cardRed : C.cardGreen,
-        borderRadius: 12,
-        border: `1px solid ${isRed ? C.borderRed : C.borderGreen}`,
-        borderLeft: `4px solid ${accent}`,
+        padding: "18px 22px 18px",
+        background: isRed
+          ? "linear-gradient(135deg, rgba(192,57,43,0.05) 0%, rgba(245,244,238,0.96) 46%, rgba(252,240,238,0.84) 100%)"
+          : "linear-gradient(135deg, rgba(106,157,42,0.06) 0%, rgba(245,244,238,0.96) 46%, rgba(237,245,219,0.8) 100%)",
+        borderRadius: 16,
+        border: `1px solid ${isRed ? "rgba(192,57,43,0.18)" : "rgba(106,157,42,0.22)"}`,
+        borderTop: `3px solid ${isRed ? "rgba(192,57,43,0.28)" : "rgba(106,157,42,0.32)"}`,
         marginBottom: 28,
-        display: "flex",
-        alignItems: "center",
-        gap: 18,
+        display: "grid",
+        gridTemplateColumns: "auto 1fr",
+        alignItems: "start",
+        gap: 16,
+        boxShadow: "0 1px 6px rgba(0,0,0,0.03)",
       }}>
         <IconBadge
           icon={icon}
-          size={20}
-          padding={10}
-          bg={isRed ? "rgba(192,57,43,0.09)" : "rgba(106,157,42,0.12)"}
-          border={`1px solid ${isRed ? C.borderRed : C.borderGreen}`}
+          size={18}
+          padding={9}
+          bg={isRed ? "rgba(192,57,43,0.08)" : "rgba(106,157,42,0.1)"}
+          border={`1px solid ${isRed ? "rgba(192,57,43,0.18)" : "rgba(106,157,42,0.22)"}`}
         />
-        <div>
+        <div style={{ minWidth: 0 }}>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            color: accent,
+            fontSize: 9,
+            letterSpacing: 2.1,
+            textTransform: "uppercase",
+            fontWeight: 700,
+            marginBottom: 10,
+          }}>
+            <span style={{ width: 5, height: 5, borderRadius: "50%", background: accent, flexShrink: 0 }} />
+            Climate Connection
+            <span style={{ height: 1, flex: 1, background: isRed ? "rgba(192,57,43,0.22)" : "rgba(106,157,42,0.26)" }} />
+          </div>
           <div style={{
             fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
-            fontSize: 15, fontWeight: 700, color: C.text, marginBottom: 4,
+            fontSize: 14.5, fontWeight: 700, color: C.text, marginBottom: 6, lineHeight: 1.35,
           }}>{headline}</div>
-          <div style={{ fontSize: 13, color: C.textSec, lineHeight: 1.6 }}>{sub}</div>
+          <div style={{ fontSize: 13, color: "#5f6257", lineHeight: 1.68, maxWidth: 780 }}>{sub}</div>
         </div>
       </div>
     </FadeIn>
@@ -229,25 +249,29 @@ function StatCard({ value, sub, label, color = C.green, watermark = "", delay = 
   const [hov, setHov] = useState(false);
   const isRed = color === C.red;
   return (
-    <FadeIn delay={delay}>
+    <FadeIn delay={delay} style={{ height: "100%" }}>
       <div
-        onMouseEnter={() => setHov(true)}
-        onMouseLeave={() => setHov(false)}
-        style={{
-          padding: "22px 18px",
-          background: hov
-            ? (isRed ? "#fce9e7" : "#eef6dd")
-            : C.card,
-          borderRadius: 12,
-          border: `1px solid ${hov ? color : C.border}`,
-          textAlign: "center",
-          position: "relative",
-          overflow: "hidden",
-          cursor: "default",
-          transition: "background 0.3s ease, border 0.25s ease",
-          boxShadow: hov ? `0 4px 20px ${color}22` : "0 1px 4px rgba(0,0,0,0.05)",
-        }}
-      >
+          onMouseEnter={() => setHov(true)}
+          onMouseLeave={() => setHov(false)}
+          style={{
+            padding: "22px 18px",
+            height: "100%",
+            background: hov
+              ? (isRed ? "#fce9e7" : "#eef6dd")
+              : C.card,
+            borderRadius: 12,
+            border: `1px solid ${hov ? color : C.border}`,
+            textAlign: "center",
+            position: "relative",
+            overflow: "hidden",
+            cursor: "default",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "background 0.3s ease, border 0.25s ease",
+            boxShadow: hov ? `0 4px 20px ${color}22` : "0 1px 4px rgba(0,0,0,0.05)",
+          }}
+        >
         {watermark && (
           <div style={{
             position: "absolute", top: "50%", left: "50%",
@@ -514,7 +538,7 @@ function WaterDropFill({ percent, label, sublabel, color = C.green, size = 100 }
   }, []);
   const id = `drop-${label.replace(/[^a-zA-Z0-9]/g, "")}`;
   return (
-    <div ref={ref} style={{ textAlign: "center", minWidth: 90 }}>
+    <div ref={ref} style={{ textAlign: "center", minWidth: 90, display: "flex", flexDirection: "column", alignItems: "center" }}>
       <svg viewBox="0 0 60 80" width={size} height={size * 1.33}>
         <defs>
           <clipPath id={id}>
@@ -541,9 +565,10 @@ function WaterDropFill({ percent, label, sublabel, color = C.green, size = 100 }
       </svg>
       <div style={{
         fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
-        fontSize: 12, fontWeight: 700, color: C.text, marginTop: 6,
+        fontSize: 12, fontWeight: 700, color: C.text, marginTop: 10,
+        lineHeight: 1.3,
       }}>{label}</div>
-      {sublabel && <div style={{ fontSize: 11, color: C.textMuted, marginTop: 2, lineHeight: 1.3 }}>{sublabel}</div>}
+      {sublabel && <div style={{ fontSize: 11, color: C.textMuted, marginTop: 4, lineHeight: 1.35, maxWidth: 120 }}>{sublabel}</div>}
     </div>
   );
 }
@@ -579,11 +604,37 @@ function FallowingMeter() {
       </div>
       <div style={{
         position: "relative",
+        paddingTop: 18,
+        marginBottom: 6,
+      }}>
+        <div style={{
+          position: "absolute",
+          top: 0,
+          left: `${(minRetiredPct + maxRetiredPct) / 2}%`,
+          transform: "translateX(-50%)",
+          padding: "2px 8px 3px",
+          borderRadius: 999,
+          background: "linear-gradient(180deg, #fff6f3 0%, #fff1ed 100%)",
+          border: `1px solid ${C.borderRed}`,
+          fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: 0.1,
+          color: C.red,
+          lineHeight: 1,
+          whiteSpace: "nowrap",
+          boxShadow: "0 1px 4px rgba(192,57,43,0.08)",
+          opacity: vis ? 1 : 0,
+          transition: "opacity 0.3s ease 0.5s",
+        }}>
+          500K-1M acres
+        </div>
+        <div style={{
+        position: "relative",
         height: 16,
         background: C.cardAlt,
         borderRadius: 999,
         overflow: "hidden",
-        marginBottom: 6,
         border: `1px solid ${C.border}`,
       }}>
         <div style={{
@@ -595,24 +646,8 @@ function FallowingMeter() {
           background: `linear-gradient(90deg, ${C.red}cc, ${C.redBright})`,
           borderRadius: 999,
           transition: "width 1.1s cubic-bezier(0.22,1,0.36,1)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          paddingRight: 8,
-          minWidth: vis ? 48 : 0,
-        }}>
-          {vis && (
-            <span style={{
-              fontFamily: "'Bebas Neue', Arial, sans-serif",
-              fontSize: 12,
-              letterSpacing: 0.8,
-              color: "#fff",
-              lineHeight: 1,
-            }}>
-              500K-1M
-            </span>
-          )}
-        </div>
+          minWidth: vis ? 58 : 0,
+        }} />
         <div style={{
           position: "absolute",
           top: 0,
@@ -633,6 +668,7 @@ function FallowingMeter() {
           opacity: 0.85,
         }}>
         </div>
+      </div>
       </div>
       <div style={{
         display: "flex",
@@ -785,12 +821,12 @@ function SOMWaterBars() {
         Soil Organic Matter — Water Holding Capacity
       </div>
       <div style={{ fontSize: 13, color: C.textMuted, marginBottom: 20 }}>Hudson 1994: gallons of plant-available water per acre</div>
-      {rows.map((row, i) => (
-        <div key={i} style={{ display: "grid", gridTemplateColumns: "72px 1fr 90px", gap: 12, alignItems: "center", marginBottom: 12 }}>
-          <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 17, color: row.isDim ? C.textMuted : C.green, textAlign: "right" }}>
-            {row.som}
-          </div>
-          <div style={{ height: 32, background: C.cardAlt, borderRadius: 7, overflow: "hidden" }}>
+        {rows.map((row, i) => (
+          <div key={i} style={{ display: "grid", gridTemplateColumns: "72px minmax(0, 1fr) 132px", gap: 12, alignItems: "center", minHeight: 48, marginBottom: 12 }}>
+            <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 17, color: row.isDim ? C.textMuted : C.green, textAlign: "right" }}>
+              {row.som}
+            </div>
+            <div style={{ height: 32, background: C.cardAlt, borderRadius: 7, overflow: "hidden" }}>
             <div style={{
               height: "100%",
               width: vis ? `${row.pct}%` : "0%",
@@ -806,14 +842,14 @@ function SOMWaterBars() {
               </span>
             </div>
           </div>
-          <div>
-            <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 18, color: row.isDim ? C.textMuted : C.green }}>
-              {row.isDim ? "baseline" : `+${((row.pct - 25) / 25 * 100).toFixed(0)}%`}
+            <div style={{ textAlign: "right", minHeight: 40, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 18, color: row.isDim ? C.textMuted : C.green }}>
+                {row.isDim ? "baseline" : `+${((row.pct - 25) / 25 * 100).toFixed(0)}%`}
+              </div>
+              <div style={{ fontSize: 10, color: C.textFaint, lineHeight: 1.35, minHeight: 26 }}>{row.label}</div>
             </div>
-            <div style={{ fontSize: 10, color: C.textFaint, lineHeight: 1.3 }}>{row.label}</div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
@@ -1022,32 +1058,21 @@ export default function WaterViz() {
         }} />
         <div style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(135deg, rgba(14,15,10,0.55) 0%, rgba(14,15,10,0.25) 50%, rgba(14,15,10,0.6) 100%)",
+          background: "linear-gradient(90deg, rgba(14,15,10,0.82) 0%, rgba(14,15,10,0.62) 36%, rgba(14,15,10,0.32) 70%, rgba(14,15,10,0.18) 100%)",
         }} />
         <div style={{
           position: "absolute", inset: 0,
           background: `linear-gradient(to bottom, rgba(14,15,10,0) 0%, rgba(14,15,10,0.75) 60%, ${C.bg} 100%)`,
         }} />
 
-        {/* Floating crisis badge */}
         <div style={{
-          position: "absolute", top: 20, right: 20,
-          background: "rgba(255,255,255,0.82)",
-          border: "1px solid rgba(192,57,43,0.32)",
-          borderRadius: 10, padding: "10px 14px",
-          textAlign: "center", backdropFilter: "blur(12px)",
-          boxShadow: "0 6px 18px rgba(0,0,0,0.35)",
-        }}>
-          <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 34, color: "#e74c3c", lineHeight: 1 }}>87%</div>
-          <div style={{ fontSize: 9, color: "#5a5a4a", letterSpacing: 1.2, marginTop: 2 }}>CA WATER LOSS</div>
-          <div style={{ fontSize: 8, color: "#7a7a6a", marginTop: 2 }}>by 2043 projection</div>
-          <div style={{
-            marginTop: 8, paddingTop: 4, borderTop: "1px solid rgba(192,57,43,0.2)",
-            fontSize: 8, color: "#e74c3c", letterSpacing: 0.5,
-          }}>aquifer stress accelerating</div>
-        </div>
+          position: "absolute",
+          inset: 0,
+          background: "radial-gradient(circle at 34% 38%, rgba(38,52,15,0.16) 0%, rgba(38,52,15,0.08) 24%, rgba(38,52,15,0) 52%)",
+        }} />
 
-        <header style={{ position: "relative", zIndex: 1, padding: "60px 32px 44px", maxWidth: 920, margin: "0 auto" }}>
+        <header style={{ position: "relative", zIndex: 1, padding: "64px 32px 44px", maxWidth: 920, margin: "0 auto" }}>
+          <div style={{ maxWidth: 660 }}>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 8,
             fontSize: 10, letterSpacing: 3, textTransform: "uppercase",
@@ -1066,31 +1091,72 @@ export default function WaterViz() {
             textShadow: "0 2px 40px rgba(0,0,0,0.9)",
             letterSpacing: 0.5,
           }}>
-            When the Water<br />
-            <span style={{ color: "#6a9d2a" }}>Runs Out</span>
+            Climate Change<br />
+            <span style={{ color: "#6a9d2a" }}>Looks Like Water Loss</span>
           </h1>
           <p style={{ color: "rgba(255,255,255,0.9)", fontSize: 15.5, lineHeight: 1.75, marginTop: 20, maxWidth: 560 }}>
-            Healthy soil holds <strong style={{ color: "#dce7cb" }}>thousands more gallons per acre</strong>. Aquifers are
-            depleting at 3-50x recharge rates. California's Central Valley - feeding 40% of America's fruits and nuts -
-            faces an existential agricultural reckoning.
+            Climate change is a water crisis. Healthy soil holds <strong style={{ color: "#dce7cb" }}>thousands more gallons per acre</strong> while hotter air, weaker snowpack, and deeper aquifer drawdown push farm systems toward collapse.
           </p>
-
-          <div style={{ display: "flex", gap: 12, marginTop: 24, flexWrap: "wrap" }}>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: 8,
+            marginTop: 24,
+            maxWidth: 700,
+          }}>
             {[
-              { val: "20K gal", label: "per 1% SOM gain", color: "#6a9d2a" },
-              { val: "-87%", label: "CA water by 2043", color: "#e74c3c" },
-              { val: "500K-1M ac", label: "projected fallowing", color: "#e74c3c" },
-            ].map((s, i) => (
-              <div key={i} style={{
-                display: "flex", alignItems: "center", gap: 10,
-                background: "rgba(255,255,255,0.84)", backdropFilter: "blur(8px)",
-                padding: "7px 12px", borderRadius: 8,
-                border: `1px solid ${s.color}30`,
-              }}>
-                <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 18, color: s.color, lineHeight: 1 }}>{s.val}</div>
-                <div style={{ fontSize: 11, color: "#6a6a5a" }}>{s.label}</div>
+              { title: "Healthy soil", stat: "20K GAL", statLabel: "per 1% SOM gain", accent: "#6a9d2a" },
+              { title: "CA water loss", stat: "-87%", statLabel: "by 2043", accent: "#e74c3c" },
+              { title: "Projected fallowing", stat: "500K-1M AC", statLabel: "retired acreage", accent: "#e74c3c" },
+            ].map((item) => (
+              <div
+                key={item.title}
+                style={{
+                  padding: "11px 12px 10px",
+                  borderRadius: 12,
+                  background: "rgba(14,15,10,0.32)",
+                  backdropFilter: "blur(6px)",
+                  border: `1px solid ${item.accent}33`,
+                  display: "grid",
+                  gap: 6,
+                }}
+              >
+                <div style={{
+                  fontSize: 10,
+                  letterSpacing: 1.6,
+                  textTransform: "uppercase",
+                  color: item.accent,
+                  fontWeight: 700,
+                  marginBottom: 2,
+                  textShadow: "0 1px 10px rgba(0,0,0,0.22)",
+                }}>
+                  {item.title}
+                </div>
+                <div>
+                  <div style={{
+                    fontFamily: "'Bebas Neue', Arial, sans-serif",
+                    fontSize: item.stat.length > 8 ? 24 : 30,
+                    lineHeight: 0.92,
+                    color: "#ffffff",
+                    marginBottom: 1,
+                  }}>
+                    {item.stat}
+                  </div>
+                  <div style={{
+                    fontSize: 10.5,
+                    lineHeight: 1.35,
+                    color: item.accent,
+                    letterSpacing: 0.7,
+                    textTransform: "uppercase",
+                    fontWeight: 700,
+                    textShadow: "0 1px 10px rgba(0,0,0,0.22)",
+                  }}>
+                    {item.statLabel}
+                  </div>
+                </div>
               </div>
             ))}
+          </div>
           </div>
         </header>
       </div>
@@ -1175,8 +1241,8 @@ export default function WaterViz() {
           <TabTransition tabKey="retention">
             <TabIntro
               icon="/icons/waterdrop.webp"
-              headline="Healthy soil is a living water reservoir"
-              sub="Every percentage point of organic matter transforms how land absorbs, holds, and releases water — the single most important variable in drought resilience and aquifer recharge."
+              headline="Healthy soil functions like a water reservoir"
+              sub="Each gain in soil organic matter helps land take in rainfall, hold it longer, and release it more steadily. That buffering becomes more valuable as storms grow sharper and drought lasts longer."
               accent={C.green}
             />
 
@@ -1290,8 +1356,7 @@ export default function WaterViz() {
             <InsightBox title="The Compounding Benefit" icon="/icons/plant.webp" accent={C.green}>
               Increasing soil organic matter by just 1% across 100 million acres of US cropland would store
               an additional <strong style={{ color: C.text }}>2 trillion gallons of water annually</strong> —
-              the equivalent of filling 3 million Olympic swimming pools. This is not a future technology.
-              It is biological regeneration already documented on thousands of farms worldwide.
+              the equivalent of filling 3 million Olympic swimming pools. This is climate adaptation at continental scale, built acre by acre through biology that already exists.
             </InsightBox>
           </TabTransition>
         )}
@@ -1301,8 +1366,8 @@ export default function WaterViz() {
           <TabTransition tabKey="aquifers">
             <TabIntro
               icon="/icons/siren.webp"
-              headline="Underground water reserves depleted beyond recovery"
-              sub="Aquifers that took thousands of years to fill are being drawn down in decades. The clay compaction that follows is permanent — not even the heaviest rains can restore what has been lost."
+              headline="Aquifers are being drained faster than they can recover"
+              sub="Water stored over centuries is being pulled down in a matter of decades. Hotter growing conditions raise demand just as weaker snowpack and slower recharge leave less water to replace it."
               accent={C.red}
             />
 
@@ -1416,8 +1481,8 @@ export default function WaterViz() {
             </div>
             <TabIntro
               icon="/icons/wheat.webp"
-              headline="America's food bowl approaching existential reckoning"
-              sub="The Central Valley produces 25% of US food on just 1% of US farmland. Decades of groundwater overdraft have now triggered a crisis with no painless resolution."
+              headline="The Central Valley is reaching a water turning point"
+              sub="This region grows an outsized share of US food, but it depends on a water system under growing strain. Warming, shrinking snowpack, and chronic overdraft are now reinforcing one another - and when that system weakens, food risk travels far beyond the Valley."
               accent={C.red}
             />
 
@@ -1458,6 +1523,10 @@ export default function WaterViz() {
                     </div>
                   ))}
                 </div>
+                <div style={{ fontSize: 13, color: C.textSec, lineHeight: 1.65, marginTop: 16 }}>
+                  When this water buffer fails, the consequence is not only regional farm stress. It is a direct
+                  threat to the reliability and affordability of food far downstream from California.
+                </div>
               </div>
             </FadeIn>
 
@@ -1492,7 +1561,7 @@ export default function WaterViz() {
                 </div>
                 <div style={{ fontSize: 13, color: C.textSec, lineHeight: 1.65, marginTop: 18 }}>
                   Simultaneously, <strong style={{ color: C.text }}>17,000 acres</strong> of Kern County farmland were permanently removed
-                  from production in 2024 alone under SGMA mandates — the first forced fallowing at industrial scale in US history.
+                  from production in 2024 alone under SGMA mandates - the first forced fallowing at industrial scale in US history.
                 </div>
               </div>
             </FadeIn>
@@ -1516,8 +1585,8 @@ export default function WaterViz() {
                       California's largest historical lake refilled in weeks. $900M—$2B in crop losses.
                     </div>
                     <div style={{ fontSize: 13, color: C.textSec, lineHeight: 1.65 }}>
-                      Drained in the 1800s for farming, Tulare Lake refilled in 2023 when rains overwhelmed
-                      subsidence-damaged drainage infrastructure — revealing the cost of building agriculture on
+                      Drained in the 1800s for farming, Tulare Lake refilled in 2023 when climate-intensified rains overwhelmed
+                      subsidence-damaged drainage infrastructure - revealing the cost of building agriculture on
                       degraded soil that cannot absorb water.
                     </div>
                   </div>
@@ -1605,8 +1674,8 @@ export default function WaterViz() {
           <TabTransition tabKey="sgma">
             <TabIntro
               icon="/icons/clipboard.webp"
-              headline="SGMA sets California's hard groundwater deadline for 2040"
-              sub="The state must eliminate a 2 million acre-foot annual overdraft. Without major water-retention gains per acre, large permanent farmland retirement is projected."
+              headline="SGMA puts California on a groundwater clock"
+              sub="The state has to close a 2 million acre-foot annual overdraft by 2040. That mandate is landing on a farm system already dealing with hotter conditions, weaker recharge, and less room for waste."
               accent={C.green}
             />
 
@@ -1714,9 +1783,9 @@ export default function WaterViz() {
                 </div>
                 <div style={{ fontSize: 14, color: C.textSec, lineHeight: 1.75, marginBottom: 20 }}>
                   Regenerative agriculture offers an SGMA compliance pathway that does not require permanent fallowing.
-                  Every 1% increase in soil organic matter reduces irrigation demand by{" "}
-                  <strong style={{ color: C.text }}>approximately 20,000 gallons per acre</strong>{" "}
-                  while reducing runoff, recharging aquifers, and improving drought resilience.
+                  Every 1% increase in soil organic matter adds roughly{" "}
+                  <strong style={{ color: C.text }}>20,000 gallons of water-holding capacity per acre</strong>{" "}
+                  while reducing runoff, improving infiltration, and strengthening drought resilience in a warming climate.
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, marginBottom: 18 }}>
                   {[
@@ -1748,7 +1817,7 @@ export default function WaterViz() {
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14 }}>
                   {[
-                    { icon: "/icons/waterdrop.webp", title: "Reduced irrigation demand", desc: "20,000 gal/acre/year saved per 1% SOM gain — compliance without fallowing" },
+                    { icon: "/icons/waterdrop.webp", title: "More water buffered in soil", desc: "About 20,000 additional gallons of water-holding capacity per acre per 1% SOM gain" },
                     { icon: "/icons/link.webp", title: "Aquifer recharge", desc: "High-infiltration soils recharge groundwater rather than generating runoff" },
                     { icon: "/icons/checklist.webp", title: "SGMA compliance pathway", desc: "On-farm water retention reduces pumping without permanent land retirement" },
                   ].map((item, i) => (
@@ -1807,8 +1876,8 @@ export default function WaterViz() {
             </div>
             <TabIntro
               icon="/icons/globe.webp"
-              headline="A planetary water crisis converging with food demand"
-              sub="Agriculture uses 70% of global freshwater. As aquifers decline and populations grow, the math of food production faces an unprecedented reckoning — with soil health as the only scalable solution."
+              headline="Water stress and food demand are tightening together"
+              sub="Agriculture already uses most of the world's freshwater. As warming lifts evaporation, trims snowpack, and pushes aquifers further into decline, food production depends more heavily on soils that can hold and cycle water well - and when water systems tighten, food systems tighten with them."
               accent={C.green}
             />
 
@@ -1818,17 +1887,31 @@ export default function WaterViz() {
                 gridTemplateColumns: "1fr 1fr",
                 gap: 16,
                 marginBottom: 24,
-                alignItems: "start",
+                alignItems: "stretch",
               }}>
                 {/* Map — left column */}
                 <div style={{
                   background: "#fff", border: "1px solid #ddd", borderRadius: 10,
                   padding: "12px 14px",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  boxSizing: "border-box",
                 }}>
                   <div style={{ fontSize: 10, letterSpacing: "0.1em", fontWeight: 700, color: "#888", marginBottom: 8, textTransform: "uppercase" }}>
                     U.S. Drought Monitor — March 12, 2026
                   </div>
-                  <img src="/u.s.-drought-monitor-03-12-2026.webp" alt="U.S. Drought Monitor Map" style={{ width: "100%", borderRadius: 6, display: "block" }} />
+                  <div style={{
+                    flex: 1,
+                    display: "flex",
+                    alignItems: "center",
+                  }}>
+                    <img
+                      src="/u.s.-drought-monitor-03-12-2026.webp"
+                      alt="U.S. Drought Monitor Map"
+                      style={{ width: "100%", borderRadius: 6, display: "block" }}
+                    />
+                  </div>
                   <div style={{ fontSize: 10, color: "#aaa", marginTop: 6 }}>
                     Source: National Drought Mitigation Center, USDA, NOAA
                   </div>
@@ -1839,27 +1922,37 @@ export default function WaterViz() {
                   background: C.card, borderRadius: 10, padding: "20px 18px",
                   border: `1px solid ${C.border}`,
                   boxShadow: "0 1px 6px rgba(0,0,0,0.05)",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  boxSizing: "border-box",
                 }}>
-                  <div style={{ fontSize: 11, letterSpacing: 2.5, textTransform: "uppercase", color: C.green, marginBottom: 20, fontWeight: 600, textAlign: "center" }}>
+                  <div style={{ fontSize: 11, letterSpacing: 2.5, textTransform: "uppercase", color: C.green, marginBottom: 24, fontWeight: 600, textAlign: "center" }}>
                     Agriculture's Share of Global Water
                   </div>
-                  <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 14, flexWrap: "nowrap", marginBottom: 6 }}>
                     <WaterDropFill percent={70} label="Global agricultural" sublabel="share of freshwater use" color={C.greenBright} size={100} />
                     <WaterDropFill percent={92} label="Humanity's food" sublabel="water footprint from farming" color="#3b82b0" size={100} />
                     <WaterDropFill percent={80} label="US water consumed" sublabel="by agriculture" color={C.green} size={100} />
                   </div>
-                  <div style={{ marginTop: 20, paddingTop: 16, borderTop: `1px solid ${C.border}` }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  <div style={{ marginTop: 26, paddingTop: 18, borderTop: `1px solid ${C.border}` }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                       {[
                         { val: "71%", label: "Aquifer systems in decline", sub: "2000–2022, Jasechko et al. 2024, Nature", color: C.red },
                         { val: "71%", label: "Aquifers dropping", sub: "of 1,700 studied", color: C.red },
                         { val: "+125%", label: "Extraction increase", sub: "40-year rise", color: "#e67e22" },
                         { val: "4B", label: "People affected", sub: "severe scarcity/yr", color: "#e67e22" },
                       ].map((s) => (
-                        <div key={s.val} style={{ textAlign: "center", padding: "8px 4px" }}>
-                          <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 28, color: s.color, lineHeight: 1 }}>{s.val}</div>
-                          <div style={{ fontSize: 11, fontWeight: 600, color: C.text, marginTop: 2 }}>{s.label}</div>
-                          <div style={{ fontSize: 10, color: C.textMuted }}>{s.sub}</div>
+                        <div key={`${s.val}-${s.label}`} style={{
+                          textAlign: "center",
+                          padding: "12px 10px 11px",
+                          borderRadius: 10,
+                          background: "linear-gradient(180deg, rgba(245,244,238,0.72) 0%, rgba(255,255,255,0.96) 100%)",
+                          border: `1px solid ${s.color === C.red ? "rgba(192,57,43,0.14)" : "rgba(230,126,34,0.16)"}`,
+                        }}>
+                          <div style={{ fontFamily: "'Bebas Neue', Arial, sans-serif", fontSize: 30, color: s.color, lineHeight: 1, marginBottom: 6 }}>{s.val}</div>
+                          <div style={{ fontSize: 11.5, fontWeight: 700, color: C.text, marginTop: 0, lineHeight: 1.35 }}>{s.label}</div>
+                          <div style={{ fontSize: 10, color: C.textMuted, marginTop: 3, lineHeight: 1.35 }}>{s.sub}</div>
                         </div>
                       ))}
                     </div>
@@ -1929,7 +2022,8 @@ export default function WaterViz() {
               resilience by 30%+. A single metric —{" "}
               <strong style={{ color: C.text }}>soil organic matter percentage</strong> — connects all
               three pillars of The Carbon Underground's evidence base. Water scarcity is not a resource
-              problem. It is a soil health problem.
+              problem. It is a climate problem expressed through soil and water systems, and ultimately
+              through the stability of the food supply those systems support.
             </InsightBox>
           </TabTransition>
         )}
@@ -1972,6 +2066,46 @@ export default function WaterViz() {
               <div key={i} style={{ fontSize: 10, color: "#7a7a6a", lineHeight: 1.65, display: "flex", gap: 6 }}>
                 <span style={{ color: "#2f5202", flexShrink: 0 }}>→</span>{s}
               </div>
+            ))}
+          </div>
+        </div>
+        <div style={{
+          marginTop: 22,
+          paddingTop: 18,
+          borderTop: "1px solid rgba(47,82,2,0.12)",
+        }}>
+          <div style={{ fontSize: 9, color: "#2f5202", fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>
+            Download Review Pack
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            {[
+              { href: "/tcu-stats-companion-guide-2026-04-01-solidline.pdf", label: "Companion Guide PDF" },
+              { href: "/tcu-stats-fact-check.pdf", label: "Fact-Check PDF" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                download
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "10px 14px",
+                  borderRadius: 10,
+                  background: "linear-gradient(180deg, #f0f4e6 0%, #e7edd8 100%)",
+                  border: "1px solid rgba(106,157,42,0.28)",
+                  color: "#264700",
+                  textDecoration: "none",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+                }}
+              >
+                <span style={{ fontSize: 14, lineHeight: 1 }}>↓</span>
+                {item.label}
+              </a>
             ))}
           </div>
         </div>

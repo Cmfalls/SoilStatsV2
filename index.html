@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Carbon Underground — Soil. Carbon. Water. Economics.</title>
+    <title>The Carbon Underground - Soil. Carbon. Water. Economics.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
@@ -15,6 +15,46 @@
         color: #ffffff;
         font-family: Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
+      }
+      #boot-status {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 32px;
+        background: linear-gradient(180deg, #111108 0%, #171a0d 100%);
+      }
+      #boot-status[hidden] { display: none; }
+      .boot-card {
+        max-width: 680px;
+        padding: 28px 26px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(106,157,42,0.24);
+        box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+      }
+      .boot-kicker {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #88b850;
+        margin-bottom: 10px;
+      }
+      .boot-title {
+        font-family: "Bebas Neue", Arial, sans-serif;
+        font-size: clamp(36px, 6vw, 58px);
+        line-height: 0.95;
+        margin-bottom: 12px;
+      }
+      .boot-copy {
+        font-size: 15px;
+        line-height: 1.7;
+        color: #d7dbd1;
+      }
+      .boot-note {
+        margin-top: 14px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #aeb4a8;
       }
       input[type=range] { cursor: pointer; }
       input[type=range]::-webkit-slider-thumb {
@@ -38,6 +78,18 @@
     </style>
   </head>
   <body>
+    <div id="boot-status">
+      <div class="boot-card">
+        <div class="boot-kicker">TCU Stats</div>
+        <div class="boot-title">Loading The Site</div>
+        <div class="boot-copy">
+          If this message stays visible, the app is probably being opened through a plain static server instead of Vite.
+        </div>
+        <div class="boot-note">
+          Use <code>npm run dev</code> and open the Vite URL, or use <code>npm run build</code> followed by <code>npm run preview</code>. Opening the root file through port <code>5500</code> will not run the JSX app correctly.
+        </div>
+      </div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
