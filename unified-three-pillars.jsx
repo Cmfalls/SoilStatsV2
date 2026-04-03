@@ -384,46 +384,46 @@ function SOMSlider() {
       border: `1px solid ${C.borderGreen}`,
       boxShadow: "0 18px 40px rgba(64, 88, 19, 0.08)",
     }}>
-      <div style={{
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "space-between",
+        <div style={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
         gap: 18,
         flexWrap: "wrap",
         marginBottom: 16,
       }}>
         <div style={{ flex: "1 1 520px" }}>
-          <div style={{
-            fontSize: 11,
-            textTransform: "uppercase",
-            letterSpacing: 3,
-            color: C.red,
+            <div style={{
+              fontSize: 11,
+              textTransform: "uppercase",
+              letterSpacing: 3,
+              color: C.red,
             marginBottom: 10,
             fontFamily: "'Inter', 'Segoe UI', Arial, sans-serif",
-          }}>
-            Interactive Climate Readout
-          </div>
-          <div style={{
-            fontFamily: "'Bebas Neue', Arial, sans-serif",
-            fontSize: "clamp(40px, 6vw, 64px)",
+            }}>
+              Interactive Climate Readout
+            </div>
+            <div style={{
+              fontFamily: "'Bebas Neue', Arial, sans-serif",
+              fontSize: "clamp(40px, 6vw, 64px)",
             lineHeight: 0.94,
-            color: C.text,
-            marginBottom: 8,
-            textShadow: "0 1px 0 rgba(255,255,255,0.4)",
-          }}>
-            Move Soil Carbon.
-            <br />
-            <span style={{ color: C.green }}>Change Climate Outcomes.</span>
+              color: C.text,
+              marginBottom: 8,
+              textShadow: "0 1px 0 rgba(255,255,255,0.4)",
+            }}>
+              Use the Slider.
+              <br />
+              <span style={{ color: C.green }}>Watch the System Shift.</span>
+            </div>
+            <div style={{
+              maxWidth: 640,
+              fontSize: 15,
+              color: C.textSec,
+              lineHeight: 1.65,
+            }}>
+              Drag upward to see how rebuilding soil carbon changes water buffering, infiltration, microbial life, and atmospheric drawdown in one live readout.
+            </div>
           </div>
-          <div style={{
-            maxWidth: 640,
-            fontSize: 15,
-            color: C.textSec,
-            lineHeight: 1.65,
-          }}>
-            Slide upward to watch the soil profile densify, darken, hold more water, and pull more carbon back out of the atmosphere.
-          </div>
-        </div>
 
         <div style={{
           padding: "11px 15px",
@@ -960,79 +960,78 @@ function ClimateThroughlinePanel() {
   ];
 
   return (
-    <div style={{
-      marginTop: 6,
-      padding: "26px 24px 24px",
-      borderRadius: 24,
-      background: "linear-gradient(135deg, rgba(20,24,14,0.96) 0%, rgba(38,49,17,0.96) 52%, rgba(22,29,13,0.98) 100%)",
-      border: "1px solid rgba(106,157,42,0.24)",
-      boxShadow: "0 18px 34px rgba(18, 24, 9, 0.18)",
-      overflow: "hidden",
-      position: "relative",
-    }}>
       <div style={{
-        position: "absolute",
-        inset: 0,
-        background: "radial-gradient(circle at 18% 14%, rgba(192,57,43,0.16) 0%, rgba(192,57,43,0) 28%), radial-gradient(circle at 82% 18%, rgba(106,157,42,0.14) 0%, rgba(106,157,42,0) 24%)",
-        pointerEvents: "none",
-      }} />
-      <div style={{ position: "relative" }}>
+        marginTop: 6,
+        padding: "22px 22px 22px",
+        borderRadius: 24,
+        background: "linear-gradient(135deg, rgba(234,240,218,0.98) 0%, rgba(223,232,196,0.98) 52%, rgba(233,239,214,0.99) 100%)",
+        border: "1px solid rgba(106,157,42,0.2)",
+        boxShadow: "0 12px 28px rgba(52, 70, 16, 0.08)",
+        overflow: "hidden",
+        position: "relative",
+      }}>
         <div style={{
-          fontSize: 10,
-          letterSpacing: 2.4,
-          textTransform: "uppercase",
-          color: "#b9cb94",
-          marginBottom: 12,
-          fontWeight: 700,
-        }}>
-          Overview
-        </div>
-        <div style={{
-          fontFamily: "'Bebas Neue', Arial, sans-serif",
-          fontSize: "clamp(34px, 4.6vw, 54px)",
-          lineHeight: 0.97,
-          color: "#ffffff",
-          marginBottom: 12,
-        }}>
-          How the Crisis
-          <br />
-          <span style={{ color: "#9dd15a" }}>Shows Up.</span>
-        </div>
-        <div style={{
-          color: "rgba(232,238,220,0.72)",
-          fontSize: 11,
-          lineHeight: 1.4,
-          letterSpacing: 2.2,
-          textTransform: "uppercase",
-          margin: "0 0 18px",
-          fontWeight: 700,
-        }}>
-          Measured across carbon, cost, and water.
-        </div>
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: 14,
+          position: "absolute",
+          inset: 0,
+          background: "radial-gradient(circle at 18% 14%, rgba(192,57,43,0.08) 0%, rgba(192,57,43,0) 28%), radial-gradient(circle at 82% 18%, rgba(106,157,42,0.08) 0%, rgba(106,157,42,0) 24%)",
+          pointerEvents: "none",
+        }} />
+        <div style={{ position: "relative" }}>
+          <div style={{
+            fontSize: 10,
+            letterSpacing: 2.2,
+            textTransform: "uppercase",
+            color: "#5f7d22",
+            marginBottom: 8,
+            fontWeight: 700,
+          }}>
+            Overview Snapshot
+          </div>
+          <div style={{
+            fontSize: 15,
+            lineHeight: 1.6,
+            color: C.textSec,
+            maxWidth: 760,
+            marginBottom: 18,
+            fontWeight: 500,
+          }}>
+            Four signals from the same system: carbon debt, farm cost pressure, water stress, and the climate damage that follows.
+          </div>
+          <div style={{
+            color: "#6a7456",
+            fontSize: 11,
+            lineHeight: 1.4,
+            letterSpacing: 2.2,
+            textTransform: "uppercase",
+            margin: "0 0 18px",
+            fontWeight: 700,
+          }}>
+            Measured across carbon, cost, and water.
+          </div>
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: 14,
         }}>
           {CRISIS.map((item, index) => (
             <div
               key={item.pillar}
-              style={{
-                padding: "16px 14px 14px",
-                borderRadius: 16,
-                background: "rgba(255,255,255,0.06)",
-                border: `1px solid ${hexToRgba(item.accent, 0.28)}`,
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
-                display: "grid",
-                gap: 8,
-              }}
-            >
+                style={{
+                  padding: "16px 14px 14px",
+                  borderRadius: 16,
+                  background: "linear-gradient(180deg, rgba(255,255,255,0.72) 0%, rgba(246,248,239,0.82) 100%)",
+                  border: `1px solid ${hexToRgba(item.accent, 0.18)}`,
+                  boxShadow: "0 8px 18px rgba(49, 62, 19, 0.05)",
+                  display: "grid",
+                  gap: 8,
+                }}
+              >
               <div style={{
-                fontSize: 10,
-                letterSpacing: 2,
-                textTransform: "uppercase",
-                color: item.accent,
-                fontWeight: 700,
+                  fontSize: 10,
+                  letterSpacing: 2,
+                  textTransform: "uppercase",
+                  color: item.accent,
+                  fontWeight: 700,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
@@ -1040,23 +1039,23 @@ function ClimateThroughlinePanel() {
                 <span>{item.pillar}</span>
                 <span style={{ color: "rgba(232,238,220,0.46)" }}>0{index + 1}</span>
               </div>
-              <div style={{
-                fontFamily: "'Bebas Neue', Arial, sans-serif",
-                fontSize: item.stat.length > 6 ? 36 : 42,
-                lineHeight: 0.92,
-                color: "#ffffff",
-              }}>
-                {item.stat}
+                <div style={{
+                  fontFamily: "'Bebas Neue', Arial, sans-serif",
+                  fontSize: item.stat.length > 6 ? 36 : 42,
+                  lineHeight: 0.92,
+                  color: C.text,
+                }}>
+                  {item.stat}
+                </div>
+                <div style={{ fontSize: 13, lineHeight: 1.45, color: C.text, fontWeight: 600 }}>
+                  {item.label}
+                </div>
+                <div style={{ fontSize: 11.5, lineHeight: 1.5, color: C.textMuted }}>
+                  {item.context}
+                </div>
               </div>
-              <div style={{ fontSize: 13, lineHeight: 1.45, color: "#ffffff", fontWeight: 600 }}>
-                {item.label}
-              </div>
-              <div style={{ fontSize: 11.5, lineHeight: 1.5, color: "rgba(232,238,220,0.74)" }}>
-                {item.context}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
       </div>
     </div>
   );
@@ -1197,19 +1196,28 @@ export default function UnifiedViz() {
       <main style={{ maxWidth: 1020, margin: "0 auto", padding: "0 32px" }}>
 
         {/* â”€â”€ The Crisis â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-        <div style={{ marginTop: 56, marginBottom: 40 }}>
-          <SectionHeader title="How Climate Shows Up" />
-          <p style={{
-            margin: "0 0 22px",
-            color: C.textMuted,
-            fontSize: 14,
-            lineHeight: 1.65,
-            maxWidth: 760,
-          }}>
-            This shows up in yield stability, costs, and water limits.
-          </p>
-          <ClimateThroughlinePanel />
-        </div>
+          <div style={{ marginTop: 56, marginBottom: 40 }}>
+            <SectionHeader title="How Climate Shows Up" />
+            <p style={{
+              margin: "0 0 22px",
+              color: C.textMuted,
+              fontSize: 14,
+              lineHeight: 1.65,
+              maxWidth: 760,
+            }}>
+              This shows up in yield stability, costs, and water limits.
+            </p>
+            <ClimateThroughlinePanel />
+            <p style={{
+              margin: "18px 0 0",
+              color: C.textSec,
+              fontSize: 14,
+              lineHeight: 1.7,
+              maxWidth: 760,
+            }}>
+              Use the slider to see how soil carbon changes water, cost, and climate outcomes.
+            </p>
+          </div>
 
         {/* â”€â”€ Interactive Slider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <FadeIn delay={200}>
